@@ -135,14 +135,7 @@
         <para>
             A BrainB egy Benchmark program amivel bárki lemérheti mekkora potenciál van benne az e-sport terén, illetve, hogy mennyire ügyes kizonyos játékelemekben. További a program készít egy e-sportoló profil az felhasználó képességei alapján.
         </para>         
-        <figure>
-            <title>BrainB futtatás közben</title>
-            <mediaobject>
-                <imageobject>
-                    <imagedata fileref="./Conway/BrainB/BrainB.png" width="80%" />
-                </imageobject>
-            </mediaobject>
-        </figure> 
+       
 
     </section>        
     <section>
