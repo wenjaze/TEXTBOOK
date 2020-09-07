@@ -7,7 +7,7 @@
     </info>
 
     <section>
-        <title>A BPP algoritmus Java megvalósítása</title>
+        <title>OO szemlélet</title>
         <para>
             Ez már a Prog2, de előre dolgozhatsz a nyári szünetben!
         </para>
@@ -17,9 +17,11 @@
     </section>        
 
     <section>
-        <title>Java osztályok a Pi-ben</title>
+        <title>Homokozó</title>
         <para>
-            Az előző feladat kódját fejleszd tovább: vizsgáld, hogy Vannak-e Java osztályok a Pi hexadecimális kifejtésében!
+            Ebben a feladatban a már meglévő LZW binfát írjuk át Java nyelvre, úgy, hogy 
+            funkcionalitásában ne változzon. Amint már a gyakorlati órán is tárgyaltunk, a 
+            pointerek/referenciák nélkül gyakorlatilag működik is.
         </para>
 
     </section>        
