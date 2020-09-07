@@ -1,0 +1,348 @@
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude" version="5.0" xml:lang="hu">
+    <info>
+        <title>Helló, Welch!</title>
+        <keywordset>
+            <keyword/>
+        </keywordset>
+    </info>
+    <section>
+        <title>Első osztályom</title>
+        <para>
+            Valósítsd meg C++-ban és Java-ban az módosított polártranszformációs algoritmust! A matek háttér 
+            teljesen irreleváns, csak annyiban érdekes, hogy az algoritmus egy számítása során két normálist
+            számol ki, az egyiket elspájzolod és egy további logikai taggal az osztályban jelzed, hogy van vagy
+            nincs eltéve kiszámolt szám. A programot 3 részre osztjuk, egy headerre, ami az osztály váza. Egy osztály implementációra. Végül pedig egy main-re ami példányosítja a PolarGen osztályt és meghívja a példány kovetkezo() függvényét.
+
+            Header:
+        </para>
+       <programlisting language="c++"><![CDATA[
+#ifndef POLARGEN__H
+#define POLARGEN__H
+
+#include <cstdlib>
+#include <cmath>
+#include <ctime>
+
+class PolarGen{
+public:
+    PolarGen(){
+        nincsTarolt = True
+        std::srand(std::time(NULL));
+    }
+    ~PolarGen(){
+    }
+
+    double kovetkezo();
+private:
+    bool nincsTarolt;
+    double tarolt;
+};
+
+#endif
+]]>
+     </programlisting> 
+     <para>
+    Implementáció:
+     </para>
+            <programlisting language="c++"><![CDATA[
+#include "polargen.h"
+
+double
+PolarGen::kovetkezo()
+{
+    if (nincsTarolt){
+        double u1,u2,v1,v2,w;
+        do {
+            u1=std::rand()/(RAND_MAX+1.0);
+            u2=std::rand()/(RAND_MAX+1.0);
+            v1 = 2*u1-1;
+            v2 = 2*u2-1;
+            w = v1*v1+v2*v2;
+        }
+        while(w>1);
+
+        double r = std::sqrt((-2*std::log(w))/w);
+        tarolt = r*v2;
+        nincsTarolt = !nincsTarolt;
+
+        return r*v1;
+    }
+    else {
+        nincsTarolt = !nincsTarolt;
+        return tarolt;
+    }
+}
+]]>
+</programlisting>
+    <para>
+        Main :
+        </para>
+        <programlisting language="c++"><![CDATA[
+#include <iostream>
+#include "polargen.h"
+
+int main(int argc,char**argv){
+    PolarGen pg;
+    for (int i{0};i<10;++i)
+        std::cout<<pg.kovetkezo()<<std::endl;
+    return 0;
+}
+]]>
+</programlisting>
+<para>
+    A javas verzió:
+    </para>
+<programlisting language="java"><![CDATA[
+    public class polargen {
+    boolean nincsTarolt = true;
+    double tarolt;
+    public polargen() {
+        nincsTarolt = true;
+    }
+    public double kovetkezo() {
+        if(nincsTarolt) {
+            double u1, u2, v1, v2, w;
+            do {
+                u1 = Math.random();
+                u2 = Math.random();
+                v1 = 2*u1 - 1;
+                v2 = 2*u2 - 1;
+                w = v1*v1 + v2*v2;
+            } while(w > 1);
+            double r = Math.sqrt((-2*Math.log(w))/w);
+            tarolt = r*v2;
+            nincsTarolt = !nincsTarolt;
+            return r*v1;
+        } else {
+            nincsTarolt = !nincsTarolt;
+            return tarolt;
+        }
+    }
+    public static void main(String[] args) {
+        polargen g = new polargen();
+        for(int i=0; i<10; ++i)
+            System.out.println(g.kovetkezo());
+    }
+}
+]]></programlisting>
+        <para>
+            Megoldás forrása: a második előadás <link xlink:href="https://arato.inf.unideb.hu/batfai.norbert/UDPROG-BHAX/Prog1_5.pdf">17-22 fólia</link>.               
+        </para>
+        <para>
+            Az OOP szemlélet a mai programozói világ esszenciális eszköze. Lehetővé teszi, hogy osztályokban
+            gondolkozzunk. Ezáltal lehetségessé válik, hogy új példányt hozzunk létre az általunk deklarált osztályból.
+        </para>                
+    </section>        
+
+    <section>
+        <title>LZW</title>
+        <para>
+            Valósítsd meg C-ben az LZW algoritmus fa-építését!
+        </para>
+        <para>
+            Megoldás forrása: <link xlink:href="Welch/LZW_binfa.cpp">https://progpater.blog.hu/2011/03/05/labormeres_otthon_avagy_hogyan_dolgozok_fel_egy_pedat</link>.               
+        </para>
+        <para>
+            A fenti program az LZW algoritmus fa építési eljárása. Készítünk egy LZW-fát, melynek a Bináris fa az alosztálya, melynek alosztálya a Node osztály amely a fa egy-egy csomópontjának értékét valamint a bal és jobb oldali gyermekére mutató mutatót tartalmaz. A BinFa és az LZWBinFa template osztályok ami azt jelenti, hogy nincs előre deklarált bemeneti típusuk, tehát az osztály példányosításánál meg kell adnunk a shift operátor által bevitt érték típusát. Az alábbi kódban int típusó binfát és char típusú LZW fát hozunk peldányosítunk.
+        </para>
+        <programlisting language="c++"><![CDATA[
+            BinTree<int> MyBinaryTree;
+            MyBinaryTree << 7 << 1 << 9 << 6 << 6 << 10 << 7 << 9 << 9 << 3 << 4 <<5 <<1;
+            LZWTree<char> MyLZWTree;
+        MyLZWTree <<'0'<<'1'<<'1'<<'1'<<'1'<<'0'<<'0'<<'1'<<'0'<<'0'<<'1'<<'0'<<'0'<<'1'<<'0'<<'0'<<'0'<<'1'<<'1'<<'1';
+]]></programlisting>
+
+    </section>        
+        
+    <section>
+        <title>Fabejárás</title>
+        <para>
+            Járd be az előző (inorder bejárású) fát pre- és posztorder is!
+
+            A bejárások típusai a bal, jobb, és a gyökér csomópont kiirási sorrendjén múlik, pre order módon járjuk be a fát, ha az sorrend a következő:
+            - Root
+            - Left
+            - Right
+        </para>
+        <programlisting language="c++"><![CDATA[
+        template <typename Vtype>
+void BinTree<Vtype>::print(Node*node,std::ostream & os )
+{
+    if(node)
+    {
+        ++depth;
+        for (int i=0;i < depth;++i)
+        {
+            os<<"---";
+        }
+        os << node->getValue()<<std::endl; //<< " ("<<depth<<") "<<node->getCount()<<"."<<std::endl;
+        print(node->leftChild(),os);
+        
+        
+        print(node->rightChild(),os);
+        --depth;
+    }
+}]]>
+</programlisting>
+        <para>
+        Postorder:
+            - Left
+            - Right
+            - Root
+        </para>
+        <programlisting language="c++"><![CDATA[
+        template <typename Vtype>
+void BinTree<Vtype>::print(Node*node,std::ostream & os )
+{
+    if(node)
+    {
+        ++depth;
+        print(node->leftChild(),os);
+        print(node->rightChild(),os);
+        for (int i=0;i < depth;++i)
+        {
+            os<<"---";
+        }
+        os << node->getValue()<<std::endl; //<< " ("<<depth<<") "<<node->getCount()<<"."<<std::endl;
+        
+        --depth;
+    }
+}]]>
+</programlisting>
+        <para>
+            Megoldás forrása:                
+        </para>
+    </section>        
+                        
+    <section>
+        <title>Tag a gyökér</title>
+        <para>
+            Az LZW algoritmust ültesd át egy C++ osztályba, legyen egy Tree és egy beágyazott Node
+            osztálya. A gyökér csomópont legyen kompozícióban a fával!
+            <link xlink:href="Welch/z3a7.cpp">z3a7.cpp</link>
+
+            A z3a7.cpp forrásunkat használva bemutathatjuk, hogy a gyökér jelen esetben kompozícióban van a fánkkal.
+            
+        </para>
+        <para>
+            Megoldás videó: <link xlink:href="https://youtu.be/_mu54BDkqiQ">https://youtu.be/_mu54BDkqiQ</link>
+        </para>
+    </section>        
+                
+    <section>
+        <title>Mutató a gyökér</title>
+        <para>
+            Írd át az előző forrást, hogy a gyökér csomópont ne kompozícióban, csak aggregációban legyen a 
+            fával!
+        </para>
+       <para>
+            Megoldás videó: <link xlink:href="https://youtu.be/_mu54BDkqiQ">https://youtu.be/_mu54BDkqiQ</link>
+        </para>
+        <para>
+            A <link xlink:href="Welch/LZW_binfa.cpp">Binfa</link> programunk tökéletesen szemlélteti milyen, ha a gyökér csak aggregációban van a fával, hiszen a BinTree osztályunk változói között a gyökeret a csomópont(Node) alosztály mutatójaként deklaráljuk.
+        </para>
+        <programlisting language="c++"><![CDATA[
+        Node *root;
+}]]>
+</programlisting>
+     </section>                     
+
+    <section>
+        <title>Mozgató szemantika</title>
+        <para>
+            Írj az előző programhoz másoló/mozgató konstruktort és értékadást, a mozgató konstruktor legyen a mozgató
+            értékadásra alapozva, a másoló értékadás pedig a másoló konstruktorra! A A <link xlink:href="Welch/LZW_binfa.cpp">Binfa</link> programunk BinTree osztályának 
+            Másoló konstruktora: 
+        </para>
+        <programlisting language="c++"><![CDATA[
+        BinTree(const BinTree & old){
+        std::cout<<"BT copy ctor"<<std::endl;
+        root = cp(old.root,old.currentNode); 
+    }       
+    ]]>
+</programlisting>
+<para>
+    Ehez szükségünk lesz egy rekurzív cp függvényre, hogy másoljuk a régi fánk csomópontjait az új fánkba,
+    melyet az első sorban nullptr-re állítunk.
+    </para>
+<programlisting language="c++"><![CDATA[
+    template <typename Vtype>
+Node * BinTree<Vtype>::cp(Node* node ,Node * currentNode)
+{
+    Node * newNode = nullptr;
+
+    if(node)
+    {
+        newNode =  new Node(node->getValue());
+        newNode.setleftChild(cp(node->leftChild(),currentNode));
+        newNode.setrightChild(cp(node->rightChild(),currentNode));
+
+        if (node == currentNode){
+            this->currentNode = newNode;
+        }
+    }
+
+    return newNode;
+}
+            ]]>
+</programlisting>
+<para>
+    Másoló értékadás:
+    Felhasználjuk a mozgató konstruktort egy ideiglenes tmp fa létrehozására, majd kicseréljük az új fánk mutatóját a tmp-re.
+</para>
+<programlisting language="c++"><![CDATA[
+    BinTree &operator=(const BinTree &){
+        std::cout<<"BT copy assignment"<<std::endl;
+        BinTree tmp{old};
+        std::swap(*this,tmp);
+        return *this;
+    }
+        ]]>
+</programlisting>
+<para>
+    Mozgató konstruktor:
+    Felhasználjuk hozzá a mozgató értékadást. Majd a régi fát átmozgatjuk az újba.
+</para>
+    <programlisting language="c++"><![CDATA[
+    BinTree(BinTree && old){
+        std::cout<<"BT move ctor"<<std::endl;
+        root = nullptr
+        *this = std::move(old);
+        
+    }   
+        ]]>
+</programlisting>
+<para>
+    Mozgató értékadás:
+    A standard névtérben található swap függvényt felhasználva a régi fának a gyökerét, valamit a régi fának az aktuális csomópontra mutató mutatóját kicseréljük az új fáéval.
+    </para>
+    <programlisting language="c++"><![CDATA[  
+    BinTree &operator=(BinTree && old){
+        std::cout<<"BT move assignment"<<std::endl;
+        std::swap(old.root,root);
+        std::swap(old.currentNode,root);
+
+        return *this;
+    } 
+}]]>
+</programlisting>
+        <para>
+            Megoldás videó: <link xlink:href="https://youtu.be/QBD3zh5OJ0Y">https://youtu.be/QBD3zh5OJ0Y</link>
+        </para>
+        <para>
+            Megoldás forrása: ugyanott.
+        </para>
+
+    </section>                     
+    <section>
+        <title>Vörös Pipacs Pokol/5x5x5 ObservationFromGrid</title>
+        <para>
+            Megoldás forrása: <link xlink:href="https://github.com/nbatfai/RedFlowerHell">https://github.com/nbatfai/RedFlowerHell</link>               
+        </para>
+        <para>
+            Tanulságok, tapasztalatok, magyarázat... ezt kell az olvasónak kidolgoznia, mint labor- vagy otthoni mérési feladatot!
+            Ha mi már megtettük, akkor használd azt, dolgozd fel, javítsd, adj hozzá értéket!
+        </para>            
+    </section>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+</chapter>                

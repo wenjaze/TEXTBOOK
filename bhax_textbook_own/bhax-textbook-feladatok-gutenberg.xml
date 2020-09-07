@@ -1,0 +1,145 @@
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude" version="5.0" xml:lang="hu">
+    <info>
+        <title>Helló, Gutenberg!</title>
+        <keywordset>
+            <keyword/>
+        </keywordset>
+        <cover>
+            <para>
+                Programozás tankönyvek rövid olvasónaplói.
+            </para>
+        </cover>
+    </info>
+    <section>
+        <title>Programozási alapfogalmak</title>
+        <para>
+            Rövid bevezető:
+            A számítógépek programozásának alvető 3 nyelv típusa:
+            &#xD;- gépi nyelv
+            &#xD;- assembly szintű nyelv
+            &#xD;- magas szintű nyelv
+
+            Ezen a kurzuson a magas szintű nyelvekkel foglalkozunk. A magass szintű nyelveket forrássszövegnek is nevezzük. A forrássövegek alapvető szabálytípusai:
+            &#xD;- szintaktikai
+            &#xD;- szemantikai
+            Ezen szabályok együttese határoz meg egy magas szintű programozási nyelvet.
+        </para>
+        <para>
+            Ahoz, hogy a számítógép, valamint főként a processzor értelmezni tudja az általunk írt nyelvet, úgy mond le kell fordítanunk gépi nyelvre. Erre két fajta technika létezik:
+            &#xD;- fordítóprogramos
+            &#xD;- interpreteres
+            
+            A fordítóprogram egy magas szintű nyelvben megírt forrásprogramból, úgy nevezett tárgyprogramot állít elő, amely a következő lépéseket hajtja végre:
+            &#xD;- lexikális elemzés
+            &#xD;- szintaktikai elemzés
+            &#xD;- szemantikai elemzés
+            &#xD;- kódgenerálás
+        </para>
+    <para>
+    Karakterkészlet: 
+    </para>
+    <para>
+    A programok forráskódjának legkisebb alkotóelemei a karakterek. A karakterkészlet minden nyelvnél alapvető és nyelvenként különböző lehet. Ezekből összeállíthatünk bonyolultabb nyelvi elemeket (eljárásorientált nyelveknél):
+
+    </para>
+    <itemizedlist>
+            <listitem><para>lexikális egységek</para></listitem>
+            <listitem><para>szintaktikai egységek</para></listitem>
+            <listitem><para>utasítások</para></listitem>
+            <listitem><para>programegységek</para></listitem>
+            <listitem><para>fordítási egységek</para></listitem>
+            <listitem><para>program</para></listitem>
+        </itemizedlist>
+        <para>
+        Minden nyelvben hasonló a karakterek katekorizálása:
+        <itemizedlist>
+            <listitem><para>betűk (az angol ABC 26 betűje)</para></listitem>
+            <listitem><para>számjegyek</para></listitem>
+            <listitem><para>egyéb karakterek (elhatároló jelek: (pl. [, ],
+., :, {, }, ’, ", ;), műveleti jelek : (+-*/),írásjelek : (?!) stb.)</para></listitem>
+        </itemizedlist>
+        </para>
+        <para>
+    Lexikális egységek:
+        </para>
+    <para>
+    A program szövegének azon elemei, melyeket a fordító a lexikális elemzés során felismer,tokenizál,
+    fajtái a következők:
+    </para>
+    <itemizedlist>
+            <listitem><para>többkarakteres szimbólum</para></listitem>
+            <listitem><para>szimbolikus név</para></listitem>
+            <listitem><para>címke</para></listitem>
+            <listitem><para>megjegyzés</para></listitem>
+            <listitem><para>literál</para></listitem>
+        </itemizedlist>
+    </section>        
+    <section>
+        <title>C programozás bevezetés</title>
+        <para>                
+            Rövid olvasónapló a <citation>KERNIGHANRITCHIE</citation> könyvről.
+        </para>
+        <para>
+            2. fejezet:
+
+            &#xD;A 2. fejezetben a típusokról, változókról,állandókról olvashatunk. Adattípusok:char,int,float,double. Az int típus long, long long, short előtagjáról is szó esik.
+            Megemlíti az unsigned változók használatát is. Olvashatunk továbbá a '\' operátor felhasználásával alkozott állandókrol.
+
+            A deklarációk pontos szintaktikájáról folyamatáról, aritmetikai operátorok (+-*/%) sajátosságairól, logikai operátorok használatáról, típuskonverzióról(castolás), in-dekrementáló operátorokról, maszkoláshoz használatos bitművelet operátorokról, értékadó operátorokról, feltételekról, precedenciákról is többet tudhatunk meg.
+
+            &#xD;3. fejezet:
+
+            &#xD;Tartalma a vezérlési szerkezetek:
+            <itemizedlist>
+            <listitem><para>Utasítások ( ; jelentőssége, {})</para></listitem>
+            <listitem><para>if,else utasítás</para></listitem>
+            <listitem><para>if,else if használata</para></listitem>
+            <listitem><para>switch utasítás</para></listitem>
+            <listitem><para>ciklusok (for,while,do-while)</para></listitem>
+            <listitem><para>break, continue utasítások</para></listitem>
+        </itemizedlist>
+            &#xD;4. fejezet:
+
+            &#xD;Tartalma a függvényes és a program szerkezete:
+            <itemizedlist>
+            <listitem><para>Függvények alapfogalmai:paraméter,visszatérési érték..</para></listitem>
+            <listitem><para>Különböző, nem egésszel visszatérő függvények</para></listitem>
+            <listitem><para>Külső változók</para></listitem>
+            <listitem><para>Érvényességi tartomány</para></listitem>
+            <listitem><para>Header file-ok</para></listitem>
+            <listitem><para>static használata(függvény saját érték esetén)</para></listitem>
+            <listitem><para>register használata(gyakran használt változó)</para></listitem>
+            <listitem><para>Rekurzió függvényekben</para></listitem>
+            <listitem><para>C előfeldolgozás(#include,#define)</para></listitem>
+            <listitem><para>Makrók,feltételes fordítás</para></listitem>
+        </itemizedlist>
+
+        </para>      
+    </section>        
+    <section>
+        <title>C++ programozás</title>
+        <para>
+            Ez a fejezet főként a C++, C-hez mért változásairól és úgy amblokk a C++-alap fogalmairól és újdonságairól. A fejezet kódcsipeteit csak c++ fordítóval tudjuk fordítani.
+            Első különbség a C-től eltérően a c++-ban egy függvény üres paraméterlistáját (void)-al jelöljük, míg a C-ben csak üresen kellet hagyni. Ha tetszőleges számú paramétert akarunk megadni akkor a (...) szintaktikát kell alkalmaznunk. Visszatérési típusoknál a következő a helyzet a C-t és a C++-t illetően: az f(){ //függvénytörzs } függvény C-ben int típussal térne vissza, azonban C++-ban hibát kapunk, mert itt már nincs lehetőségünk
+            visszatérési típus nélküli fuggvény deklarálnunk. C++ main függvénye kétféle képpen deklarálható : argc,argv argumentumokkal, vagy azok nélkül. Érdekesség, hogy nincs szükség a return 0;-ra, mert sikeres futás esetén a 
+            main függvényünk alapvetően 0-val tér vissza. Meg kell említenünk mint ultimate feature-t : bool típus! A C-ben nem használhatunk bool típust, azonban a C++-ban már megtehetjük ezt. A bool azaz boolean típusú változó, igaz, vagy hamis értékkel inicializálható. Létezik automatikus konverzió az int és a bool között : 0-false 1-true. Változódeklaráció, mint utasítás : ami azt jelenti, hogy bárhol állhat változó, ahol állhat utasítás. Ez lehetővé teszi, hogy akár ideiglenes változót akkor deklaráljunk amikor szügség van rá, így az általa lefoglalt memória nem lesz felhasználva, ameddig arra feltétlen szükségünk nincsen.
+        </para>
+    </section>        
+    <section>
+        <title>Python nyelvi bevezetés</title>
+        <para>                
+            A Python nyelvi sajátosságai, további saját kiegészítések :
+
+        </para>
+        <itemizedlist>
+            <listitem><para>Deklaráció során nincs típus deklaráció.</para></listitem>
+            <listitem><para>A for ciklus szintaktikája teljesen más. A C# foreach-hez hasonló.</para></listitem>
+            <listitem><para>Szintaktia, kódcsoportosítás egyszerű tagolással:( "{ }", ";" nincsenek kódcsoportosításra.Helyette space,kettőspont, tab.)</para></listitem>
+            <listitem><para>A Python interpreter használ.</para></listitem>
+            <listitem><para>Az állításokat azonos szintű behúzásokkal tudjuk csoportosítani.</para></listitem>
+            <listitem><para>Komment : '#'</para></listitem>
+            <listitem><para>Az if-else, ciklusok,függvények deklarációja után közvetlen : -ot használunk</para></listitem>
+            <listitem><para>Nincs típus -> nincs függvény visszatérési érték deklaráció sem.</para></listitem>
+        </itemizedlist>
+    </section>        
+</chapter>                
