@@ -9,8 +9,20 @@
     <section>
         <title>OO szemlélet</title>
         <para>
-            Ez már a Prog2, de előre dolgozhatsz a nyári szünetben!
+            <link xlink:href="Arroway/polargen.java">
+            Polártranszformációs normális szám generátor Java nyelven.
+            </link>.
+            Ezen algoritmus megvalósításához szükségünk lesz egy logikai változóra
+            amely megmondja, hogy páros, vagy páratlanadik lépésben hívtuk-e meg a következő()
+            függvényt. Ha igaz akkor a "tárolt" nevezetű double változóban eltároltuk a számot.
+            A megoldás mondható jónak, hiszen a hivatalos JDK osztályok között a Random.java-val összevetve
+            kísértetes hasonlóságot vélünk felfedezni.
         </para>
+        <mediaobject>
+            <imageobject>
+                <imagedata fileref="Arroway/polargen_sun.png" width="100%" />
+            </imageobject>
+        </mediaobject>
         <para>
             Megoldás forrása: <link xlink:href="https://regi.tankonyvtar.hu/hu/tartalom/tkt/javat-tanitok-javat/apas03.html">https://regi.tankonyvtar.hu/hu/tartalom/tkt/javat-tanitok-javat/apas03.html</link>               
         </para>
