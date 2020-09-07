@@ -1,6 +1,6 @@
 ## TEXTBOOK
 
-####_Prog1/Prog2 mérési jegyzőkönyv_
+#### _Prog1/Prog2 mérési jegyzőkönyv_
 
 - [ ] __0. hét - "Helló, Berners-Lee!"__
   - Olvasónapló... WIP :construction:
