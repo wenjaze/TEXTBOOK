@@ -1,9 +1,7 @@
 <part xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude" version="5.0" xml:lang="hu">
     <title>Második felvonás</title>
     <partintro>
-        <para> 
-        </para>
-<tip>
+            <tip>
               <title>Bátf41 Haxor Stream</title>
               <para>
                   A feladatokkal kapcsolatos élő adásokat sugároz
@@ -11,8 +9,7 @@
                   melynek permanens archívuma a <link xlink:href="https://www.youtube.com/c/nbatfai">https://www.youtube.com/c/nbatfai</link> 
                   csatornán található.
               </para>            
-            </tip>    
-        
+            </tip>
     </partintro>
 
     <xi:include href="bhax-textbook-feladatok2-berners-lee.xml">
@@ -24,7 +21,7 @@
     </xi:include>
 
     <xi:include href="bhax-textbook-feladatok2-arroway.xml">
-        <xi:fallback>íw
+        <xi:fallback>
             <para>
                 <emphasis>XInclude: bhax-textbook-motto.xml file not found</emphasis>
             </para>
