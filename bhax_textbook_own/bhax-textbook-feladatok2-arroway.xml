@@ -35,8 +35,103 @@
             funkcionalitásában ne változzon. Amint már a gyakorlati órán is tárgyaltunk, a 
             pointerek/referenciák nélkül gyakorlatilag működik is.
         </para>
+        <para>
+            <link xlink:href="./Arroway/LZWBinFa.java"></link>
+        </para>
 
-    </section>        
+    </section>
+    <section>
+        <title>Gagyi</title>
+        <para>
+			Az ismert formális
+            <code language="C">
+                <![CDATA[while (x <= t && x >= t && t != x);]]>
+            </code>
+			    tesztkérdéstípusra adj a szokásosnál (miszerint x, t az egyik
+				esetben az objektum által hordozott érték, a másikban meg az
+				objektum referenciája) "mélyebb" választ, írj Java példaprogramot
+				mely egyszer végtelen ciklus, más x, t értékekkel meg nem! A példát
+				építsd a JDK Integer.java forrására, hogy a 128-nál inkluzív
+				objektum példányokat poolozza!
+        </para>
+        <para>
+										Ha belegondolunk, hogy mi lehet a vége ennek a programnak, tévesen azt gondolhatjuk
+                                        , hogy nincs olyan szám amit x és t helyére beírva ne végtelen ciklust kapnánk. Miért ?
+									</para>
+									<para>
+										A magyarázat a jelenségre, hogy a Java nyelvben az
+										<classname>Integer</classname> osztály
+										<function>equals</function> függvénye nem egyformán dolgozik a
+										<function>==</function> operátorral. Míg az operátor azt nézi,
+											hogy a jobb és bal oldalak referenciája egyenlő e, az
+										<function>equals</function> függvény az értékeket hasonlítja
+											össze, az osztály <function>valueOf</function> függvényének
+												segítségével.
+										</para>
+										<para>
+											A lényeg az, hogy bármilyen 128-nál kisebb értékre a program
+											megáll, bármilyen 127-nél nagyobb étrékre pedig végtelen
+											ciklusba kerül.
+										</para>
+										<para>
+											Ennek az oka pedig az, hogy a Java ezeket a nullához relatíve
+											közel lévő számokat egy afféle gyorsítótárban tárolja, poolozza.
+											
+										</para>
+										<para>
+											A következő kódcsipet a JDK7 forrásából származik.
+										</para>
+										<programlisting language="java">
+<![CDATA[ 
+public static Integer valueOf(int i) {
+
+    assert IntegerCache.high >= 127;
+
+    if (i >= IntegerCache.low && i <= IntegerCache.high)
+
+        return IntegerCache.cache[i + (-IntegerCache.low)];
+
+    return new Integer(i);
+
+}]]>
+										</programlisting>
+										<para>
+											A java, a jobb teljesítmény és alacsonyabb futásidő érdekében
+											ezekhez a kicsi számokhoz nem új objektumokat hoz létre a Java,
+											hanem az IntegerCache-ből szed ki egy megfelelő számot.
+										</para>
+        <para>
+			<link xlink:href="./Arroway/Gagyi.java"></link>
+        </para>
+    </section>
+    <section>
+											<title>Yoda</title>
+											<para>
+												Írjunk olyan Java programot, ami java.lang.nullpointerex-el leáll,
+												ha nem követjük a yoda conditions-t!
+												https://en.wikipedia.org/wiki/yoda_conditions
+											</para>
+											<para>
+                                            Főként kezdő programozók hibája, vagy esetleg typoból származó szintaktikai hiba,
+                                            az if fejében való értékadás <function>=</function>, az összehasonlítás <function>==</function> helyett.
+											A Yoda conditions erre a gyakori hibára ad megoldást, ugyanis az így írt kódunk:
+                                            
+											</para>
+                                            <programlisting language="java">
+                                            <![CDATA[ 
+                                                class Yoda {
+    public static void main(String[] args) {
+        int num = 42;
+        if(42 = num) { /* NullPointerError */ }
+    }
+}
+
+                                            ]]>
+                                            </programlisting>
+											<para>
+												fordítási időben java.lang.NullPointerEx-el áll le.
+											</para>
+										</section>
         
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
-</chapter>                
+</chapter>    

@@ -1,0 +1,180 @@
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude" version="5.0" xml:lang="hu">
+    <info>
+        <title>Helló, Liskov!</title>
+        <keywordset>
+            <keyword/>
+        </keywordset>
+    </info>
+    <section>
+        <title>Liskov helyettesítés sértése</title>
+        <para>
+            A Liskov helyettesítési elv nem mást mond ki,
+            mint, hogy minden osztály legyen helyettesíthető a gyerek osztályával
+            anélkül, hogy bármilyen működésbeli differencia lépne fel. A Liskov elv része
+            a clean code egyik szabályrendszerének is a S.O.L.I.D elveknek.
+        </para>
+        <programlisting language="c++">
+        <![CDATA[
+            class Madar {
+            public:
+                virtual void repul() {};
+            };
+
+            // ez a két osztály alkotja a "P programot" az LPS-ben
+            class Program {
+            public:
+                void fgv ( Madar &madar ) {
+                    madar.repul();
+                }
+            };
+
+            // itt jönnek az LSP-s S osztályok
+            class Sas : public Madar
+            {};
+
+            class Pingvin : public Madar // ezt úgy is lehet/kell olvasni, hogy a pingvin tud repülni
+            {};
+
+            int main ( int argc, char **argv )
+            {
+                Program program;
+                Madar madar;
+                program.fgv ( madar );
+
+                Sas sas;
+                program.fgv ( sas );
+
+                Pingvin pingvin;
+                program.fgv ( pingvin ); // sérül az LSP, mert a P::fgv röptetné a Pingvint, ami ugye lehetetlen.
+
+            }
+        ]]>
+        </programlisting>
+        <para>
+            Az alábbi  <link xlink:href="https://sourceforge.net/p/udprog/code/ci/master/tree/source/binom/Batfai-Barki/madarak/liskovsert.cpp">programcsipet</link>
+            a Liskov elvet sértő példa. A példából jól látszik, hogy a Pingvin ugyanúgy a Madár
+            alosztálya, melynek létezik repül metódusa. Nyílvánvalóan a Pingvin nem tud repülni, így az öröklött
+            <function>repul()</function> függvénynek nem kellene meghívhatónak lennie a Pingvin alosztályból.
+        </para>
+        <para>
+            Erre egy valid megoldás, ha a Madár főosztálynak készítünk egy RepülőMadár alosztályt, és a repül metódust, majd abba inicializáljuk,
+            így a Pingiv tud majd a Madár alosztálya lenni, ezáltal nem fog tudni repülni, azonban mégis lesz olyan madár amely képes lesz erre.
+        </para>
+    </section>   
+    <section>
+        <title>Szülő-gyerek</title>
+        <programlisting language="c++">
+        <![CDATA[ 
+            
+#include <iostream>
+#include <string>
+
+class Szulo {
+public:
+    void print(std::string s) {
+        std::cout << s << std::endl;
+    }
+};
+
+class Gyermek : public Szulo {
+public:
+    void kiir(std::string s) {
+        std::cout << s << s << std::endl;
+    }
+};
+
+int main(int argc, char **argv) {
+    Szulo* szulo = new Szulo();
+    Szulo* szulo2 = new Gyermek();
+
+    // Ez az, ami nem fog mukodni:
+    szulo2->kiir("Uzenet");
+
+    return 0;
+}
+
+            ]]>
+        </programlisting>
+        <para>
+            Amennyiben megpróbáljuk fordítani a fenti C++ kódot,
+            a fordító a következő hibával kilép:
+        </para>
+        <screen><![CDATA[$ g++ ParentChild.cc -o /dev/null
+        ParentChild.cc: In function ‘int main(int, char**)’:
+ParentChild.cc:23:13: error: ‘class Szulo’ has no member named ‘kiir’
+   23 |     szulo2->kiir("Uzenet");
+      |             ^~~~]]>
+        </screen>
+        <para>
+            Hasonló a helyzet Javában is:
+        </para>
+        <programlisting language="java">
+            <![CDATA[
+            class Szulo {
+            public void print(String s) {
+                System.out.println(s);
+                }
+            }
+
+            class Gyermek extends Szulo {
+                public void kiir(String s) {
+                    System.out.println(s);
+                    System.out.println(s);
+                }
+            }
+
+            public class ParentChild {
+                public static void main(String[] args) {
+                    Szulo sz = new Szulo();
+                    Szulo sz2 = new Gyermek();
+
+                    // Ez az, ami nem megy
+                    sz2.kiir("Uzenet");
+                }
+            }
+
+            ]]>
+        </programlisting>
+
+        <screen><![CDATA[$ java ParentChild.java
+        ParentChild.java:20: error: cannot find symbol        sz2.kiir("Uzenet");
+           ^
+  symbol:   method kiir(String)
+  location: variable sz2 of type Szulo1 error
+error: compilation failed]]>
+        </screen>
+    </section>
+    <section>
+   <title>Hello, Android!</title>
+        <para>
+            Élesszük fel az <link
+            xlink:href="https://gitlab.com/nbatfai/smnist/tree/master/forHumans/SMNISTforHumansExp3/app/src/main">SMNIST
+            for Humans</link> projektet!
+        </para>
+        <para>
+            Érdekes módon a mai natív androidos appok nagy része, áll sok XML fájlból ami a UI-ért felelős és
+            áll Kotlin/Java osztályokból melyek a UI működésért felelősek. Az SMNIST-ben azonban a UI elementek nagy részét
+            egy Java osztályban hozunk létre, számolunk ki.
+        </para>
+        <para>
+            A forráskódot saját kitalált feladatként kicsit updateltem, átírtam Kotlin nyelvre, valamint kijavítottam
+            a deprecated függvényeket és updateltem a verziót.
+        </para>
+    </section>
+    <section>
+    <title>Ciklomatikus komplexitás</title>
+    <para>
+    A Ciklomatikus komplexitás egy program gráfelméletre alapuló, a forráskódban az elágazó gráfok pontjai és a köztük lévő élek száma alapján,
+    számolandó. A végeredmény egy pozitív egész szám lesz. Én a fenti Szülő-Gyermek programot választottam.
+    A Ciklomatikus komplexitás kiszámolására számos fejlesztői környezet plug-in van, azonban én az egyszerűség kedvéért egy online-t használtam.
+    </para>
+    <figure>
+            <title>Ciklomatikus komplexitás</title>
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="./files/Ciklomatikus" width="100%" />
+                </imageobject>
+            </mediaobject>
+        </figure>
+    </section>
+    </chapter>
