@@ -1,0 +1,166 @@
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude" version="5.0" xml:lang="hu">
+    <info>
+        <title>Helló, Chomsky!</title>
+        <keywordset>
+            <keyword/>
+        </keywordset>
+    </info>
+    <section>
+        <title>Encoding</title>
+        <para>
+            Fordítsuk le és futtassuk a Javat tanítok könyv
+            MandelbrotHalmazNagyító.java forrását úgy, hogy a fájl nevekben és
+            a forrásokban is meghagyjuk az ékezetes betűket!
+        </para>
+        <para>
+            <link xlink:href="https://www.tankonyvtar.hu/hu/tartalom/tkt/javat-tanitok-javat/adatok.html">
+                https://www.tankonyvtar.hu/hu/tartalom/tkt/javat-tanitok-javat/adatok.html
+            </link>
+        </para>
+        <para>
+            A forrásokat célszerű zip-ben letölteni, majd kicsomagolni.
+            A keresett fájl, a <filename>MandelbrotHalmazNagyító.java</filename>
+            az alábbi útvonalon lesz a kicsomagolt zip-ben:
+            <filename>javat-tanitok-javat/forrasok/javat_tanitok_forrasok/nehany_egyeb_pelda</filename>.
+        </para>
+        <para>
+            A következő akadály, hogy ezek a fájlok <filename>latin1</filename>
+            kódolással vannak kódolva, ezt a következő parancs kiadásával
+            hozhatjuk helyre, feltéve, hogy a megfelelő könyvtárban vagyunk.
+        </para>
+        <screen><![CDATA[$ mkdir utf
+$ find . -type f -exec iconv -f latin1 -t utf-8 "{}" -o utf/"{}" \;]]>
+        </screen>
+        <para>
+            Ezután az utf mappában a fájlneveket kézzel kell helyrehoznunk:
+            <filename>MandelbrotHalmazNagy?t?.java</filename> ->
+            <filename>MandelbrotHalmazNagyító.java</filename>.
+        </para>
+        <screen><![CDATA[$ javac MandelbrotHalmazNagyító.java
+$ java MandelbrotHalmazNagyító]]>
+        </screen>
+    </section>
+     <section>
+        <title>OOCWC lexer</title>
+        <para>
+            Izzítsuk be az OOCWC-t és vázoljuk a <link
+            xlink:href="https://github.com/nbatfai/robocar-emulator/blob/master/justine/rcemu/src/carlexer.ll">
+            https://github.com/nbatfai/robocar-emulator/blob/master/justine/rcemu/src/carlexer.ll</link>
+            lexert és kapcsolását a programunk OO struktúrájába!
+        </para>
+        <para>
+            A lexer forrákódja itt található :
+        </para>
+        <programlisting language="c++">
+            <textobject>
+                <textdata fileref="./Chomsky/carlexer.ll" />
+            </textobject>
+        </programlisting>
+        <para>
+            A forráskód olyanok számára akik még nem találkoztak lexerrel,
+             véleményem szerint nehezen értelemzhető, a forráskód egy fontos része az alábbi.
+        </para>
+        <programlisting language="c++">
+<![CDATA[
+{ROUTE}{WS}{INT}{WS}{INT}({WS}{INT})*	{
+  int size{0};
+  int ss{0};
+  int sn{0};
+
+  std::sscanf(yytext, "<route %d %d%n", &size, &m_id, &sn);
+  ss += sn;
+  for(int i{0}; i<size; ++i)
+  {
+    unsigned int u{0u};
+    std::sscanf(yytext+ss, "%u%n", &u, &sn);
+    route.push_back(u);
+    ss += sn;
+  }
+  m_cmd = 101;
+}
+]]></programlisting>
+        <para>
+            A cél az, hogy <emphasis role="strong">bármennyi</emphasis>
+            (legalább kettő) számú
+            <code language="c++">({WS}{INT})</code> párost be tudjunk olvasni.
+             Mivel nem tudjuk, hogy
+            egy ilyen bemenet milyen hosszúságú lesz, az
+            <function>std::sscanf</function> függvényt segítségét hívjuk
+            ahhoz, hogy számolja meg a már eleve beolvasott karkaterek számát
+            is, amelett hogy azokat változókba pakolgatja. Ehhez a <code
+                language="c++">%n</code> sztringet konkatenáljuk a függvény első
+            paraméterének végéhez, majd utolsó paraméternek megadjuk a
+             számlálót -> <function>sn</function>.
+        </para>
+        <para>
+            Ennek a segítségével már egy
+            <function>for</function>ciklussal könnyedén végig tudunk lépkedni az
+            adott soron.
+        </para>
+    </section>
+     <section>
+        <title>l334d1c4</title>
+        <para>
+            Ebben a fejezetben egy OO Java programot készítünk el, amely
+            megvalósítja a <link
+            xlink:href="https://simple.wikipedia.org/wiki/Leet">
+            Leet-kódolást</link>.
+        </para>
+        <para>
+            <emphasis role="strong">A program forrása:</emphasis>
+        </para>
+        <programlisting language="java">
+            <textobject>
+                <textdata fileref="./Chomsky/Dict.java" />
+            </textobject>
+        </programlisting>
+        <para>
+            A program fordítható a <filename>make</filename> parancs
+            kiadásával és futtatható a <filename>java Dict</filename>
+            parancs kiadásával.
+        </para>
+        <screen><![CDATA[
+Hello, world!
+|-|3|_|_0, \/\/012|_|>!
+
+Hello, world!
+|-|3|_|_0, \/\/012|_|]!
+
+Hello, world!
+|-|3|_|_0, \/\/012|_|]!
+]]>
+        </screen>
+        <para>
+            Ahogyan látszik, a program igyekszik különböző kimenetet
+            adni különböző futásokkal, ennek az az oka, hogy
+            a karaktercserénél random választja ki, hogy mire cserélje
+            le az adott karaktert.
+        </para>
+        <para>
+            A fordításra használt karaktereket egy <filename>HashMap</filename>
+            adatszerkezetben (szótárban) tároljuk. Ennek a méretének a
+            meghatározására sajnos nincsen primitív módszer, annyi azonban
+            biztos hogy bejegyzésenként 8 bájt biztosan elmegy. Ehhez még hozzá
+            kell vegyük a kulcs-érték párok sztringjeinek a hosszát, amely
+            hossznak a kiszámítására a következő a képletet:
+        </para>
+        <screen>
+<![CDATA[(bytes) = 8 * (int) ((((no chars) * 2) + 45) / 8)]]>
+        </screen>
+        <para>
+            Forrás: <link
+            xlink:href="https://stackoverflow.com/questions/31206851/how-much-memory-does-a-string-use-in-java-8">
+            stackoverflow</link>.
+        </para>
+        <para>
+            Ezeket együtt véve (a fenti számoló függvény segítségével) én a
+            következő értéket kaptam:
+        </para>
+        <screen>
+<![CDATA[Size of the HashMap: 3288 bytes]]>
+        </screen>
+    </section>
+
+
+    
+</chapter>

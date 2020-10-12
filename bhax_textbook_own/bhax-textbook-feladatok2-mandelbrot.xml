@@ -1,0 +1,135 @@
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude" version="5.0" xml:lang="hu">
+    <info>
+        <title>Helló, Mandelbrot!</title>
+        <keywordset>
+            <keyword/>
+        </keywordset>
+    </info>
+    <section>
+        <title>Reverse engineering UML osztálydiagram</title>
+        <para>
+            Az UML osztálydiagrammok kezdetben tervezésre voltak szánva,
+            viszont sok programozó workflow-ja ennek éppen a fordítottja,
+            vagyis először programoznak, aztán dokumentálnak. Ennek
+            következtében kialakult a szokás, hogy reverse engineering
+            jelleggel készítünk UML osztálydiagrammokat, vagyis akkor, mikor
+            már a forráskód készen van.
+        </para>
+        <para>
+            Az UML specifikációja viszonylag nagy terjedelmű, viszont ezt nem
+            is szükséges ismernünk. Az osztálydiagrammok jelölése a következő
+            rendszere a következőképp néz ki: van egy három részre bontott
+            téglalapunk, a legfelső részben az osztály neve van.  A következő
+            részben a mezők, majd alattuk a metódusok találhatók. A publikus
+            adattagok jelölője a <filename>+</filename>, a priváté a
+            <filename>-</filename>, a protected láthatóságú adattagokat pedig a
+            <filename>#</filename> azonosítja.
+        </para>
+        <para>
+            Az első védési programhoz, az <filename>LZWBinFá</filename>hoz
+            tartozó osztálydigram itt látható.
+        </para>
+        <figure>
+            <title>LZWBinFa UML osztálydiagramm</title>
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="./files/UML.png" width="100%" />
+				</imageobject>
+			</mediaobject>
+		</figure>
+    </section>
+    
+    <section>
+        <title>Egy esettan</title>
+        <para>
+            BME C++ könyv 14. fejezetét (427-444 elmélet; 445-469 esettan)
+            dolgozzuk fel!
+        </para>
+        <para>
+            Az esettanulmány az UML tervezés előnyeit próbálja megmutatni.  A
+            történet, hogy van egy cég, aki számítógépeket és alkatrészeket
+            árul, és az ő számukra kell egy alkalmazást készíteni, ami
+            nyilvántartja az alkatrészeket és a konfigurációkat.  Továbbá cél
+            az is, hogy a jövőben minél egyszerűbben kiegészíthető koncepciót
+            alkossunk.
+        </para>
+        <para>
+            A megoldást esetünkben egy C++ könyvtár (library) segítségével
+            oldották meg, hiszen így felhasználható anélkül is, hogy kiadnák a
+            forráskódját.
+        </para>
+        <para>
+            Ez a rendszer képes kezelni elemi, vagy összetett
+            termékeket, úgy, hogy a terméket tartalmazó osztályban
+            van egy termékeket tároló vektor, ami tartalmazza az ő
+            alkatrészeit, amik szintén a termék osztály példányaiból állnak.
+        </para>
+        <para>
+            Az osztályok UML osztálydiagrammjai szerint a következőképpen
+            néz ki:
+        </para>
+        <figure>
+            <title>C++ könyv esettan</title>
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="./files/bmeuml.png" width="100%" />
+                </imageobject>
+            </mediaobject>
+        </figure>
+        <para>
+            A program egyszerű felépítésű szövegfájlokból képes beolvasni
+            adatokat, és ezeket reprezentálja ebben a bizonyos
+            adatszerkezetben, amiről beszéltünk.
+        </para>
+    </section>
+    <section>
+        <title>BPMN</title>
+        <para>
+            Rajzoljunk le egy tevékenységet BPMN-ben!
+        </para>
+        <para>
+            A feladat megoldásához a  <link
+            xlink:href="https://demo.bpmn.io/new">bpmn.io</link> webappot használtam.
+        </para>
+        <para>
+            A következő BPMN diagram azt mutatja, hogy mi történik egy oldalra való bejelentkezéskor.
+        </para>
+        <figure>
+            <title>BPMN tevékenység</title>
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="./files/BPMN.png" width="100%" />
+                </imageobject>
+            </mediaobject>
+        </figure>
+        <para>
+            Az ábra magyarázata:
+        </para>
+        <itemizedlist>
+            <listitem>
+                <para>
+                    A vékony körvonalú kör a <emphasis
+                    role="strong">tevékenység kezdetét</emphasis> jelöli.
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                    téglalap -> <emphasis
+                    role="strong">feladatok</emphasis>at jelölik.
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                    A rombuszba -> (olyan mint egy if-else statement) <emphasis
+                    role="strong">kapu</emphasis>.
+                </para>
+            </listitem>
+            <listitem>
+                <para>
+                   A vastag körvönalú kör a <emphasis
+                   role="strong">tevékenység vége.</emphasis>
+                </para>
+            </listitem>
+        </itemizedlist>
+    </section>
+</chapter>
