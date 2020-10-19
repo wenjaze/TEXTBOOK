@@ -55,7 +55,7 @@ $ unzip src.zip]]>
             Egy példa kimenet itt látható:
         </para>
         <screen>
-<![CDATA[$ ./jdk_classes
+<![CDATA[$ ./jdk
 ...
 AgentLoadException (file: "/home/b1/src/jdk.attach/com/sun/tools/attach/AgentLoadException.java")
 AttachPermission (file: "/home/b1/src/jdk.attach/com/sun/tools/attach/AttachPermission.java")
