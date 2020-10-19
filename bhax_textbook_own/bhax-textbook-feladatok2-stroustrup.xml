@@ -1,0 +1,71 @@
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude" version="5.0" xml:lang="hu">
+    <info>
+        <title>Helló, Stroustrup!</title>
+    </info>
+    <section>
+        <title>JDK osztályok</title>
+        <para>
+            Írjunk olyan Boost C++ programot (indulj ki például a fénykardból)
+            amely kilistázza a JDK összes osztályát (miután kicsomagoltuk az
+            src.zip állományt, arra ráengedve)!
+        </para>
+        <para>
+            A JDK forráskódját megszerezhetjük például az alábbi parancsok
+            kiadásával (Linux alatt):
+        </para>
+        <screen>
+<![CDATA[$ wget https://download.java.net/java/GA/jdk13/5b8a42f3905b406298b72d750b6919f6/33/GPL/openjdk-13_linux-x64_bin.tar.gz
+$ tar -zxvf openjdk-13_linux_x64_bin.tar.gz
+$ mv jdk-13/lib/src.zip .
+$ unzip src.zip]]>
+        </screen>
+        <para>
+            Ha minden rendben van, akkor most van egy <filename>src</filename>
+            mappánk, ami tartalmazza a JDK forrásait. A következő dolog,
+            amire szükségünk lesz, az a Boost C++ könyvtárak, amit telepíthetünk
+            (Ubuntu alatt) például a következő parancs kiadásával:
+        </para>
+        <screen>
+<![CDATA[$ sudo apt-get install libboost-all-dev]]>
+        </screen>
+        <para>
+            Ezután már a könyv repójának a
+            <filename>files/stroustrup/JDK_Classes</filename> mappájában
+            található <filename>Makefile</filename> segítségével egyszerűen
+            fordítható a programunk.
+        </para>
+        <para>
+            A forráskód működése egyszerű: egy vektorba beolvassuk az
+            összes fájlt, ami a bizonyos <filename>src</filename> mappában van,
+            majd belenézünk az összesbe, és keressünk a
+            <filename>class</filename> kulcssszót kiegészítve a fájl nevével.
+            Amennyiben találunk ilyet, akkor azt tároljuk és legvégül
+            kiíratjuk. A trükk, hogy mivel a Java konvenció azt mondja,
+            hogy az osztály nevének egyeznie kell a fájl nevével, csak az olyan
+            fájlokat számoljuk, amik azt az osztályt tartalmazzák, amiknek
+            mondják magukat.
+        </para>
+        <programlisting language="C++">
+            <textobject>
+                <textdata
+                fileref="./files/stroustrup/JDK_Classes/jdk_classes.cc"/>
+            </textobject>
+        </programlisting>
+        <para>
+            Egy példa kimenet itt látható:
+        </para>
+        <screen>
+<![CDATA[$ ./jdk_classes
+...
+AgentLoadException (file: "/home/b1/src/jdk.attach/com/sun/tools/attach/AgentLoadException.java")
+AttachPermission (file: "/home/b1/src/jdk.attach/com/sun/tools/attach/AttachPermission.java")
+AttachOperationFailedException (file: "/home/b1/src/jdk.attach/com/sun/tools/attach/AttachOperationFailedException.java")
+AttachProvider (file: "/home/b1/src/jdk.attach/com/sun/tools/attach/spi/AttachProvider.java")
+HotSpotAttachProvider (file: "/home/b1/src/jdk.attach/sun/tools/attach/HotSpotAttachProvider.java")
+HotSpotVirtualMachine (file: "/home/b1/src/jdk.attach/sun/tools/attach/HotSpotVirtualMachine.java")
+AttachProviderImpl (file: "/home/b1/src/jdk.attach/sun/tools/attach/AttachProviderImpl.java")
+VirtualMachineImpl (file: "/home/b1/src/jdk.attach/sun/tools/attach/VirtualMachineImpl.java")
+There are 15314 classes in JDK (sources dir: "/home/b1/src").]]>
+        </screen>
+    </section>
+</chapter>
