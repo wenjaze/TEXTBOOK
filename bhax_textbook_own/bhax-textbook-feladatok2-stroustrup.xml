@@ -48,7 +48,7 @@ $ unzip src.zip]]>
         <programlisting language="C++">
             <textobject>
                 <textdata
-                fileref="./files/stroustrup/JDK_Classes/jdk_classes.cc"/>
+                fileref="./Stroustrup/jdk.cpp"/>
             </textobject>
         </programlisting>
         <para>
@@ -67,5 +67,30 @@ AttachProviderImpl (file: "/home/b1/src/jdk.attach/sun/tools/attach/AttachProvid
 VirtualMachineImpl (file: "/home/b1/src/jdk.attach/sun/tools/attach/VirtualMachineImpl.java")
 There are 15314 classes in JDK (sources dir: "/home/b1/src").]]>
         </screen>
+    </section>
+    <section>
+        <title>Másoló-mozgató szemantika</title>
+        <para>
+            Kódcsipeteken (copy és move ctor és assign) keresztül vesd össze a
+            C++11 másoló és a mozgató szemantikáját, a mozgató konstruktort
+            alapozd a mozgató értékadásra!
+        </para>
+        <para>
+            Ebben a feladatban a C++ másoló és mozgató szemantikáját hasonlítjuk
+            össze, úgy, hogy előbb megírjuk a másoló konstruktort, majd erre
+            alapozzuk mozgató konstruktort is.
+        </para>
+        <para>
+            Ehhez létrehozunk egy <filename>Adat</filename> osztályt, ami
+            mindössze egy <function>k</function> számot fog tartalmazni.
+        </para>
+        <para>
+            <emphasis role="strong">Megoldás forrása:</emphasis>
+        </para>
+        <programlisting language="c++">
+            <textobject>
+                <textdata fileref="./Stroustrup/ctor.cpp" />
+            </textobject>
+        </programlisting>
     </section>
 </chapter>
