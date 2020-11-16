@@ -79,12 +79,6 @@
             </xi:fallback>
         </xi:include>   
         
-        <xi:include href="bhax-textbook-ack.xml">
-            <xi:fallback>
-                <para>
-                    <emphasis>XInclude: bhax-textbook-ack.xml file not found</emphasis>
-                </para>
-            </xi:fallback>
-        </xi:include>  
+        
 
 </book>

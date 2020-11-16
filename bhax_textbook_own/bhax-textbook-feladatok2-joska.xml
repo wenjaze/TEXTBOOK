@@ -1,0 +1,384 @@
+<chapter xmlns="http://docbook.org/ns/docbook"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:xi="http://www.w3.org/2001/XInclude" version="5.0" xml:lang="hu">
+    <info>
+        <title>Helló, Anon!</title>
+        <keywordset>
+            <keyword/>
+        </keywordset>
+    </info>
+    <section>
+        <title>FUTURE tevékenység editor</title>
+        <para>
+            A programot elindítva (egyszerűen <code language="bash">./run</code>
+            használatával) a következőt láthatjuk:
+        </para>
+        <figure>
+            <title>ActivityEditor</title>
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="./Joska/activityed.png" width="100%" />
+                </imageobject>
+            </mediaobject>
+        </figure>
+        <para>
+            A módosítás nem más lesz, mint hogy egy új színsémát vezetek be
+            a programba ami a következő <link xlink:href="https://www.nordtheme.com/">Nord</link>
+            színszéma.
+        </para>
+        <para>
+            Mindezt egy egyszerű CSS fájl létrehozásával, valamint egy extra sor
+            beszúrásával elő lehet idézni. A dokumentáció <link xlink:href="https://docs.oracle.com/javafx/2/api/javafx/scene/doc-files/cssref.html">itt
+                érhető el</link>, viszont az elolvasástól óva intenék minden
+            programozót, időpazarlás lenne. A CSS-t amúgy is mindenki ismeri.
+        </para>
+        <para>
+            Az én CSS változatom itt látható:
+        </para>
+        <programlisting>
+            <![CDATA[ .root {
+    -fx-accent: #a3be8c;
+    -fx-focus-color: -fx-accent;
+    -fx-base: #2e3440;
+    -fx-control-inner-background: -fx-base;
+    -fx-control-inner-background-alt: -fx-base;
+}
+.label{ -fx-text-fill: #eceff4; }
+.separator *.line { -fx-background-color: #4c566a;
+    -fx-border-style: solid;
+    -fx-border-width: 3px;
+}
+.scroll-bar{ -fx-background-color: -fx-accent; }
+.button:default { -fx-base: -fx-accent; }
+.table-view {
+    -fx-background-color: derive(-fx-base, 10%);
+    -fx-selection-bar-non-focused: derive(-fx-base, 85%);
+}
+.table-view .column-header .label{ -fx-font-weight: none; } ]]>
+        </programlisting>
+        <para>
+            Ezzel a stíluslappal a program a következőképp mutat:
+        </para>
+        <figure>
+            <title>ActivityEditor Nord</title>
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="./Joska/activityed-nord.png" width="100%" />
+                </imageobject>
+            </mediaobject>
+        </figure>
+    </section>
+    <section>
+        <title>OOCWC Boost ASIO hálózatkezelése</title>
+        <para>
+            Mutassunk rá a scanf szerepére és használatára!
+        </para>
+        <para>
+            <link xlink:href="https://github.com/nbatfai/robocar-emulator/blob/master/justine/rcemu/src/carlexer.ll">
+                https://github.com/nbatfai/robocar-emulator/blob/master/justine/rcemu/src/carlexer.ll
+            </link>
+        </para>
+        <para>
+            A <filename>carlexer.ll</filename> egy lexxer fájl, a lényeges része
+            a következő:
+        </para>
+        <programlisting language="c++">
+            <![CDATA[ %option c++
+%option noyywrap
+%{
+#define YY_DECL int justine::robocar::CarLexer::yylex()
+#include "carlexer.hpp"
+#include <cstdio>
+#include <limits>
+%}
+INIT	"<init"
+INITG	"<init guided"
+WS	[ \t]*
+WORD	[^-:\n \t()]{2,}
+INT	[0123456789]+
+FLOAT	[-.0123456789]+
+ROUTE	"<route"
+CAR	"<car"
+POS	"<pos"
+GANGSTERS	"<gangsters"
+STAT	"<stat"
+DISP	"<disp>"
+%%
+{DISP}					{
+					  m_cmd = 0;
+					}
+{POS}{WS}{INT}{WS}{INT}{WS}{INT}	{
+					  std::sscanf(yytext, "<pos %d %u %u", &m_id, &from, &to);
+					  m_cmd = 10001;
+					}
+{CAR}{WS}{INT}				{
+					  std::sscanf(yytext, "<car %d", &m_id);
+					  m_cmd = 1001;
+					}
+{STAT}{WS}{INT}				{
+					  std::sscanf(yytext, "<stat %d", &m_id);
+					  m_cmd = 1003;
+					}
+{GANGSTERS}{WS}{INT}			{
+					  std::sscanf(yytext, "<gangsters %d", &m_id);
+					  m_cmd = 1002;
+					}
+{ROUTE}{WS}{INT}{WS}{INT}({WS}{INT})*	{
+				  int size{0};
+				  int ss{0};
+				  int sn{0};
+				  std::sscanf(yytext, "<route %d %d%n", &size, &m_id, &sn);
+				  ss += sn;
+				  for(int i{0}; i<size; ++i)
+				  {
+				    unsigned int u{0u};
+				    std::sscanf(yytext+ss, "%u%n", &u, &sn);
+				    route.push_back(u);
+				    ss += sn;
+				  }
+				  m_cmd = 101;
+				}
+{INIT}{WS}{WORD}{WS}("c"|"g")	{
+				  std::sscanf(yytext, "<init %s %c>", name, &role);
+				  num = 1;
+				  m_cmd = 0;
+				}
+{INIT}{WS}{WORD}{WS}{INT}{WS}("c"|"g")	{
+				  std::sscanf(yytext, "<init %s %d %c>", name, &num, &role);
+				  if(num >200)
+				  {
+				    m_errnumber = 1;
+				    num = 200;
+				  }
+				  m_cmd = 1;
+				}
+{INITG}{WS}{WORD}{WS}("c"|"g")	{
+				  std::sscanf(yytext, "<init guided %s %c>", name, &role);
+				  num = 1;
+				  m_guided = true;
+				  m_cmd = 3;
+				}
+{INITG}{WS}{WORD}{WS}{INT}{WS}("c"|"g")	{
+				  std::sscanf(yytext, "<init guided %s %d %c>", name, &num, &role);
+				  if(num >200)
+				  {
+				    m_errnumber = 1;
+				    num = 200;
+				  }
+				  m_guided = true;
+				  m_cmd = 2;
+				}
+.				{;}
+%%
+int yyFlexLexer::yylex(){return -1;}]]>
+        </programlisting>
+        <para>
+            Az sscanf függvényt a bemenet feldolgozására használjuk. A yytext
+            <type>char*</type> tartalmazza az éppen feldolgozásra váró
+            sztringet.
+        </para>
+        <para>
+            Az sscanf használata egyszerű: meg kell adnunk neki a vizsgálandó
+            szöveget, majd egy sztringet, amiben különleges jelentéssel bíró
+            karaktereket helyezhetünk el, ezekről tájékozódhatunk a <code language="bash">man scanf</code> parancs kiadásával.
+            Ezek a különleges jelentéssel bíró karakterek fogják megadni, hogy
+            pontosan milyen jellegű bemenetet is várunk. Ezután meg kell adni
+            annyi darab referenciát, ahány ilyen különleges jelentéssel bíró
+            karaktert használtunk a szabályok leírása során. A különleges
+            jelentéssel bíró karaktereket             <![CDATA[%]]> jel után kell megadnunk.
+        </para>
+        <para>
+            Például a következő sor:
+        </para>
+        <programlisting language="c++">
+            <![CDATA[std::sscanf(yytext, "betu: %c, szam: %d", &c, &i);]]>
+        </programlisting>
+        <para>
+            jelentése, hogy vizsgáljuk meg a yytext sztringet, és amennyiben
+            betu: BETŰ, szam: SZÁM alakú, a BETŰ-t tegyük be a c változóban, a
+            SZÁM-ot pedig az i változóba.
+        </para>
+    </section>
+    <section>
+        <title>SamuCam</title>
+        <para>
+            Mutassunk rá a webcam (pl. Androidos mobilod) kezelésére ebben a
+            projektben:
+            <link xlink:href="https://github.com/nbatfai/SamuCam">
+                https://github.com/nbatfai/SamuCam
+            </link>
+        </para>
+        <para>
+            A SamuCam egy Qt projekt, ami azt jelenti, hogy szükségünk lesz a
+            QtCreator termékcsaládra a feladat során. Ennek a telepítése
+            egyszerű, a legtöbb GNU/Linux disztribúció csomagkezelője tartalmaz
+            megfelelő csomagokat a telepítéshez. Ha ez megvan, akkor egyszerűen
+            a <code language="bash"><![CDATA[qmake . && make]]></code>
+            paranccsal fordítható.
+        </para>
+        <para>
+            Ami minket a projekt kapcsán érdekel, az a webkamera kezelése. Ennek
+            a lelke a <filename>SamuCam.cpp</filename> fájlban nyugszik.
+        </para>
+        <para>
+            Amennyiben a header fájlt megnézzük, láthatjuk, hogy a kamera
+            kezelésére az opencv2 könyvtárat használjuk:
+        </para>
+        <programlisting language="c++">
+            <![CDATA[#include "opencv2/objdetect.hpp"
+#include "opencv2/videoio.hpp"
+#include "opencv2/highgui.hpp"
+#include "opencv2/imgproc.hpp"]]>
+        </programlisting>
+        <para>
+            Fontos megjegyezni, hogy az OpenCV nem csak arra alkalmas, hogy a
+            kamerát kezelje, hanem sokszínű kínálattal rendelkezik gépi tanulás
+            terén is.
+        </para>
+        <para>
+            A <classname>SamuCam</classname> osztály konstruktorában rögtön el
+            is készítünk egy úgynevezett VideoStream-et, ami hasonló mint egy
+            alap C++-os adatfolyam, csak itt videótartalom folyik. A folyamot az
+            osztály <methodname>openVideoStream()</methodname> metódusával
+            nyitjuk meg.
+        </para>
+        <programlisting language="c++">
+            <![CDATA[void SamuCam::openVideoStream()
+{
+  videoCapture.open ( videoStream );
+  videoCapture.set ( CV_CAP_PROP_FRAME_WIDTH, width );
+  videoCapture.set ( CV_CAP_PROP_FRAME_HEIGHT, height );
+  videoCapture.set ( CV_CAP_PROP_FPS, 10 );
+}]]>
+        </programlisting>
+        <para>
+            Itt az is látszik, hogy beállítjuk az alapvető dolgokat a
+            videófolyamhoz. A <varname>width</varname> és
+            <varname>height</varname> a SamuCam osztály mezői.
+        </para>
+        <para>
+            A fő logika a követező ciklusban található, itt dolgozzuk fel a
+            "látott" adatokat az OpenCV segítségével.
+        </para>
+        <programlisting language="c++">
+            <![CDATA[while ( videoCapture.isOpened() ) {
+      QThread::msleep ( 50 );
+      while ( videoCapture.read ( frame ) ) {
+          if ( !frame.empty() ) {
+              cv::resize ( frame, frame, cv::Size ( 176, 144 ), 0, 0, cv::INTER_CUBIC );
+              std::vector<cv::Rect> faces;
+              cv::Mat grayFrame;
+              cv::cvtColor ( frame, grayFrame, cv::COLOR_BGR2GRAY );
+              cv::equalizeHist ( grayFrame, grayFrame );
+              faceClassifier.detectMultiScale ( grayFrame, faces, 1.1, 4, 0, cv::Size ( 60, 60 ) );
+              if ( faces.size() > 0 ) {
+                  cv::Mat onlyFace = frame ( faces[0] ).clone();
+                  QImage* face = new QImage ( onlyFace.data,
+                                              onlyFace.cols,
+                                              onlyFace.rows,
+                                              onlyFace.step,
+                                              QImage::Format_RGB888 );
+                  cv::Point x ( faces[0].x-1, faces[0].y-1 );
+                  cv::Point y ( faces[0].x + faces[0].width+2, faces[0].y + faces[0].height+2 );
+                  cv::rectangle ( frame, x, y, cv::Scalar ( 240, 230, 200 ) );
+                  emit  faceChanged ( face );
+                }
+              QImage*  webcam = new QImage ( frame.data,
+                                             frame.cols,
+                                             frame.rows,
+                                             frame.step,
+                                             QImage::Format_RGB888 );
+              emit  webcamChanged ( webcam );
+            }
+          QThread::msleep ( 80 );
+        }
+      if ( ! videoCapture.isOpened() ) {
+          openVideoStream();
+        }
+    }]]>
+        </programlisting>
+    </section>
+    <section>
+        <title>BrainB</title>
+        <para>
+            Mutassuk be a Qt slot-signal mechanizmust ebben a projektben:
+            <link xlink:href="https://github.com/nbatfai/esport-talent-search">
+                https://github.com/nbatfai/esport-talent-search
+            </link>
+        </para>
+        <para>
+            A slot-signal mechanizmusok lehetőséget ad arra, hogy objektumok
+            kommunikáljanak egymással. Ez a funckió a Qt szerves részét képezi.
+        </para>
+        <para>
+            A fő ötlet az, hogy amikor módosítunk egy Widgetet, akkor
+            feltehetőleg a többit is megfelelően módosítani akarjuk. Kiváló
+            példa erre például egy gomb kezelése, amikor a gombot a felhasználó
+            megnyomja, akkor meg akarjuk hívni a függvényt, ami a gomb
+            lenyomását kezeli.
+        </para>
+        <para>
+            A legtöbb eszköz az ilyeneket úgynevezett callback függvények
+            segítségével oldja meg, például a gomb megnyomásakor a meghívja az
+            <function>onButtonPressed()</function> függvényt.
+        </para>
+        <para>
+            A slot-signal rendszer erre kínál egy alternatívát: egy úgynevezett
+            signal jön létre, mikor egy bizonyos esemény megtörténik. A slotok
+            pedig függvények, amelyek lefutnak egy bizonyos signal hatására.
+            Ezeket a kötésviszonyokat a <function>connect()</function> kell
+            megadnunk.
+        </para>
+        <para>
+            Fontos, hogy a slot-signal párok szignatúrái megegyezzenek.
+        </para>
+        <para>
+            Élő példa következik az esport-talent-search projekt soraiból, ez a
+            BrainBThread.h fejlécfájl egy része:
+        </para>
+        <programlisting language="c++">
+            <![CDATA[ signals:
+    void heroesChanged ( const QImage &image, const int &x, const int &y );
+    void endAndStats ( const int &t );]]>
+        </programlisting>
+        <para>
+            A következő sorok pedig a BrainBWin.h fejlécfájlból származnak:
+        </para>
+        <programlisting language="c++">
+            <![CDATA[ public slots :
+    void updateHeroes ( const QImage &image, const int &x, const int &y );
+    //void stats ( const int &t );
+    void endAndStats ( const int &t ); ]]>
+        </programlisting>
+        <para>
+            Miután a slotokat és a signalokat megadtuk, még össze is kell őket
+            kötnünk, ez a BrainBWin osztály konstruktorában történik meg:
+        </para>
+        <programlisting language="c++">
+            <![CDATA[brainBThread = new BrainBThread ( w, h - yshift );
+brainBThread->start();
+connect ( brainBThread, SIGNAL ( heroesChanged ( QImage, int, int ) ),
+this, SLOT ( updateHeroes ( QImage, int, int ) ) );
+connect ( brainBThread, SIGNAL ( endAndStats ( int ) ),
+this, SLOT ( endAndStats ( int ) ) );]]>
+        </programlisting>
+        <para>
+            Egy bizonyos signalt kibocsájtani az emit utasítással lehet, ezt
+            teszi a <methodname>BrainBThread::run()</methodname> metódusa is:
+        </para>
+        <programlisting language="c++">
+            <![CDATA[void BrainBThread::run()
+{
+    while ( time < endTime ) {
+            QThread::msleep ( delay );
+            if ( !paused ) {
+                    ++time;
+                    devel();
+            }
+            draw();
+    }
+    emit endAndStats ( endTime );
+}]]>
+        </programlisting>
+    </section>
+</chapter>

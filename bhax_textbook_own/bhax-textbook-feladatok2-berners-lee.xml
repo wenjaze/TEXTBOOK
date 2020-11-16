@@ -1,31 +1,33 @@
-<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude" version="5.0" xml:lang="hu">
+<chapter xmlns="http://docbook.org/ns/docbook"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:xi="http://www.w3.org/2001/XInclude" version="5.0" xml:lang="hu">
     <info>
         <title>Helló, Berners-Lee!</title>
         <keywordset>
             <keyword/>
         </keywordset>
-    </info>  
+    </info>
 
     <section>
-		<title>Olvasónapló</title>
-		<para>
+        <title>Olvasónapló</title>
+        <para>
 			A "Helló, Berners-Lee!" c. fejezetben az alábbi könyveket dolgozzuk
 			fel. A fő szálunk egy Java és C++ összehasonlítás lesz, amit akár
 			rövidre zárhatnánk annyival, hogy a két nyelvben más a
 			memóriakezelés, azonban be kell látnunk, hogy a különbség nem
 			csupány ennyi.
-		</para>
+        </para>
         <itemizedlist>
             <listitem>
-				<para>C++: Benedek Zoltán, Levendovszky Tihamér
+                <para>C++: Benedek Zoltán, Levendovszky Tihamér
 					Szoftverfejlesztés C++ nyelven </para>
             </listitem>
             <listitem>
-				<para>Java: Nyékyné Dr. Gaizler Judit et al. Java 2 útikalauz
+                <para>Java: Nyékyné Dr. Gaizler Judit et al. Java 2 útikalauz
 					programozóknak 5.0 I-II. </para>
             </listitem>
             <listitem>
-				<para>Python: Forstner Bertalan, Ekler Péter, Kelényi Imre:
+                <para>Python: Forstner Bertalan, Ekler Péter, Kelényi Imre:
 					Bevezetés a mobilprogramozásba. </para>
                 <para>
 					Gyors prototípus-fejlesztés Python és Java nyelven (35-51
@@ -33,145 +35,161 @@
                 </para>
             </listitem>
         </itemizedlist>
-	</section>
-	<section>
-		<title>Java versus C++</title>
-		<para>
-			<emphasis role="strong">1. fejezet</emphasis>
-		</para>
-		<para>
+    </section>
+    <section>
+        <title>Java versus C++</title>
+        <para>
+            <emphasis role="strong">1. fejezet</emphasis>
+        </para>
+        <para>
 			A Java nyelv teljesen objektumorientált, azaz osztályokból
 			felépülő. Egy osztályt mezők és metódusok alkothatnak, az osztályok
 			pedig programokat. Nézzük is meg a legegyszerűbb Java programot.
-		</para>
-		<programlisting language="java">
-<![CDATA[public class Hello {
+        </para>
+        <programlisting language="java">
+            <![CDATA[public class Hello {
 	public static void main(String[] args) {
 		System.out.println("Hello, World!");
 		}
 	}
 ]]>
-		</programlisting>
-		<para>
+        </programlisting>
+        <para>
 			A Java nyelvben bevált szokás, hogy a fájlneveinket a benne
 			található osztályok nevével egyeztetjük össze, tehát a fenti
 			példaprogramot <filename>Hello.java</filename> néven mentsük el.
-		</para>
-		<para>
+        </para>
+        <para>
 			Bár a C++ nyelv is objektum-orientált, mégsem mondhatjuk, hogy a
 			szemlélete azonos lenne a Javával. Mint tudjuk, a legtöbb C program
 			C++ program is, és ezzel már találtunk is egy kivételhalmazt. Míg a
 			C++ enged változókat, függvényeket, eljárásokat létrehozni
 			osztályokon kívül is, Javában erre nincsen lehetőség.
-		</para>
-		<para>
+        </para>
+        <para>
 			A példaprogramon keresztül bemutatják a fordítás működését is
 			Javaban, mely szintén teljesen eltér a C++-étól. Míg a legtöbb
 			modern C++ fordító a C++ kódot gépi kódra fordítja, a Java
 			fordító bájtkódot hoz létre a JVM (Java Virtuális Gép) részére.
-		</para>
-		<para>
+        </para>
+        <para>
 			A Java kezdeti sikereit a weboldalakba építhető ún. applet-eknek
 			köszönhette. Ezek többségben egyszerű programok voltak, melyeket
 			manapság már nem használnak olyan széles körben.
-		</para>
-		<para>
+        </para>
+        <para>
 			A könyv ismerteti a változótípusokat, melyeket itt is megemlítünk,
 			hiszen egy nyelv jellemzése során ez fontos szempont. Itt nagy
 			eltérésről nem beszélhetünk a C++-szal szemben.
-		</para>
-		<itemizedlist>
-			<listitem><para>boolean -- logikai</para></listitem>
-			<listitem><para>char -- 16 bites Unicode karakter</para></listitem>
-			<listitem><para>byte -- 8 bites előjeles egész</para></listitem>
-			<listitem><para>short -- 16 bites előjeles egész</para></listitem>
-			<listitem><para>int -- 32 bites előjeles egész</para></listitem>
-			<listitem><para>long -- 64 bites előjeles egész</para></listitem>
-			<listitem><para>float -- 32 bites lebegőpontos</para></listitem>
-			<listitem><para>double -- 64 bites lebegőpontos</para></listitem>
-		</itemizedlist>
-		<para>
+        </para>
+        <itemizedlist>
+            <listitem>
+                <para>boolean -- logikai</para>
+            </listitem>
+            <listitem>
+                <para>char -- 16 bites Unicode karakter</para>
+            </listitem>
+            <listitem>
+                <para>byte -- 8 bites előjeles egész</para>
+            </listitem>
+            <listitem>
+                <para>short -- 16 bites előjeles egész</para>
+            </listitem>
+            <listitem>
+                <para>int -- 32 bites előjeles egész</para>
+            </listitem>
+            <listitem>
+                <para>long -- 64 bites előjeles egész</para>
+            </listitem>
+            <listitem>
+                <para>float -- 32 bites lebegőpontos</para>
+            </listitem>
+            <listitem>
+                <para>double -- 64 bites lebegőpontos</para>
+            </listitem>
+        </itemizedlist>
+        <para>
 			Konstansokat a Java nyelvben a final minősítővel adhatunk meg.
-		</para>
-		<para>
+        </para>
+        <para>
 			Ahogy a példaprogramban is látszik, a Java nyelvben a
-			<filename>class</filename> kulcsszóval hozhatunk létre
+            <filename>class</filename> kulcsszóval hozhatunk létre
 			osztályt, az osztályokat pedig a <filename>new</filename>
 			operátorral példányosítjuk. Láthatóságtól függően az osztályban
 			található mezőket <filename>osztalyneve.mezoneve</filename> módon
 			érhetjük el és módosíthatjuk.
-		</para>
-		<para>
+        </para>
+        <para>
 			A Java nyelv kivételkezelése hasonló a C++-éhoz, itt is try-catch
 			blokkokat kell használnunk.
-		</para>
-		<para>
+        </para>
+        <para>
 			A könyv a grafikai programozás példájára az AWT könyvtárat hozza,
 			viszont ez manapság már deprecated. Véleményem szerint a legjobb,
 			ha az AWT helyett inkább a JavaFX könyvtárral ismerkedünk meg,
 			melyről már írtam az előző felvonásban, ugyanitt példaprogram is
 			megtalálható.
-		</para>
-		<para>
-			<emphasis role="strong">2. fejezet -- Az alapok</emphasis>
-		</para>
-		<para>
+        </para>
+        <para>
+            <emphasis role="strong">2. fejezet -- Az alapok</emphasis>
+        </para>
+        <para>
 			Hatalmas előnye a Java nyelvnek, hogy az
-			<filename>Unicode</filename> karakterkódolást részesíti előnyben az
-			<filename>ASCII</filename> helyett, ezáltal sokkal több karaktert
+            <filename>Unicode</filename> karakterkódolást részesíti előnyben az
+            <filename>ASCII</filename> helyett, ezáltal sokkal több karaktert
 			használhatunk a programkódban. Ez azt jelenti, hogy bármiféle
 			félelem nélkül használhatunk osztályok, változók, metódusok nevében
 			ékezetes karaktereket.
-		</para>
-		<para>
+        </para>
+        <para>
 			A Java nyelvben minden típus egy osztály is egyben. A legalapvetőbb
 			osztály az <filename>Object</filename> osztály, mindenki ebből
 			örököl. Mivel a Java egy erősen típusos nyelv, a típuskonverziók
 			mindenhol jelen vannak. A nyelv minden összehasonlításnál megnézi,
 			hogy az összehasonlított elemek egy típushoz tartoznak-e, vagy
 			automatikus típuskonverzióval egy típusra konvertálhatók-e.
-		</para>
-		<para>
+        </para>
+        <para>
 			A 2. fejezet további sorai ismertetik a primitív változótípusokat
 			(amelyeket már én is ismertettem), a változódeklarációkat,
 			tömbdeklarációkat. Itt azonban véleményem szerint annyira kevés
 			különbség van a C++-hoz képest, hogy felesleges tovább ragoznom.
 			Úgy is csak ugyanazt tudnám leírni, ami a könyvben is szerepel.
-		</para>
-		<para>
-			<emphasis role="strong">3. fejezet -- Vezérlés</emphasis>
-		</para>
-		<para>
+        </para>
+        <para>
+            <emphasis role="strong">3. fejezet -- Vezérlés</emphasis>
+        </para>
+        <para>
 			A Java-ban két alapvető utasításfajta van, ezek a
 			kifejezés-utasítás, valamint a deklaráció-utasítás. Amennyiben
 			ezeket az utasításokat <filename><![CDATA[{}]]></filename> jelek
 			közé írjuk, úgy egy blokk jön létre.
-		</para>
-		<para>
+        </para>
+        <para>
 			A Java nyelvben vannak egyszerű és összetett elágazások. Egyszerű
 			utasítás az <filename>if</filename>-es szerkezetek, összetett
 			elágazás pedig a <filename>switch</filename>. Míg az előbbiben két
 			esetet különböztetünk meg (igaz/hamis), az utóbbiban akárhány
 			esetre felkészülhetünk.
-		</para>
-		<para>
+        </para>
+        <para>
 			Java-ban a ciklusok nagyon hasonlóak a C++-éhoz, itt is a
-			<filename>while, do-while, for</filename> ciklusokat használhatjuk.
-		</para>
-		<para>
-			<emphasis role="strong">4. fejezet -- Osztályok</emphasis>
-		</para>
-		<para>
+            <filename>while, do-while, for</filename> ciklusokat használhatjuk.
+        </para>
+        <para>
+            <emphasis role="strong">4. fejezet -- Osztályok</emphasis>
+        </para>
+        <para>
 			Az osztályok a legkisebb önálló egységek a Java nyelvben, valamint
 			a könyv legközpontibb alkotóeleme. A könyv szerzői nagyon nagy
 			hangsúlyt fektettek erre a fejezetre.
-		</para>
-		<para>
+        </para>
+        <para>
 			Ahogy az a fenti példaprogramban látszik, az osztályokat a
 			következőképpen hozhatjuk létre.
-		</para>
-		<programlisting language="java">
-			<![CDATA[
+        </para>
+        <programlisting language="java">
+            <![CDATA[
             public class Animal {
                 String name;
                 int weight;
@@ -182,63 +200,62 @@
                 }
             }
 			]]>
-		</programlisting>
-		<para>
+        </programlisting>
+        <para>
 			A fenti példában kiválóan látszik, hogy miképp néz ki egy egyszerű
-			osztály, az itt megjelenő változókat <emphasis
-				role="strong">mező</emphasis>knek, a függvényeket, eljárásokat
+			osztály, az itt megjelenő változókat <emphasis role="strong">mező</emphasis>knek, a függvényeket, eljárásokat
 			pedig metódusnak nevezzük összefoglaló néven.
-		</para>
-		<para>
+        </para>
+        <para>
 			A könyv ír a metódusnevek túlterheléséről, ez a funkció elérhető
 			C++-ban. A jelentése, hogy több metódust elnevezhetünk ugyanúgy,
 			amennyiben a szignatúrájuk különbözik. Egy metódus szignatúráját a
 			paraméterek száma és típusa adja meg. A szignatúra a metódust
 			azonosítja.
-		</para>
-		<para>
+        </para>
+        <para>
 			Egy osztályt lehet példányosítani az alábbi módon;
-		</para>
-		<programlisting language="java">
-			<![CDATA[
+        </para>
+        <programlisting language="java">
+            <![CDATA[
 hallgato = new Hallgato();
 			]]>
-		</programlisting>
-		<para>
+        </programlisting>
+        <para>
 			A könyv ír a láthatóságokról is. A Java nyelv láthatóságai a
 			következők lehetnek; <filename>public, private,
 				protected</filename>.  A public láthatóságú változókat el lehet
 			érni és módosítani bárhonnan, míg a private láthatóságú változók
 			nem érhetők el kívülről.  A protected változókat az öröklött
 			osztályok érhetik el és módosíthatják.
-		</para>
-		<para>
+        </para>
+        <para>
 			A következő fontos dolog amiről beszélnünk kell, az a konstruktorok
 			és a destruktorok. Ahogyan a nevük is hordozza, ezek olyan
 			metódusok, amelyek egy adott objektum létrejöttekor, illetve
 			törlésükkor futnak le.
-		</para>
-		<para>
+        </para>
+        <para>
 			A konstruktor nevének meg kell egyeznie az osztály nevével,
 			visszatérési típusa nincsen. A szerepe, hogy egy objektumot
 			felkészít olyan adatokkal, amiket már tudunk a létrehozásakor.
 			Alább nézünk egy példát egy konstruktorra, illetve destruktorra.
-		</para>
-		<para>
+        </para>
+        <para>
 			A destruktor szerepe itt a C++-beli szerepével ellentétben
-			<emphasis role="strong">nem</emphasis> az ún. <emphasis>garbage
+            <emphasis role="strong">nem</emphasis> az ún. <emphasis>garbage
 				collection</emphasis>, avagy szemétgyűjtés, hanem az olyan
 			feladatok elvégzése, amelyeket szükséges az objektum törlődése
 			előtt elvégeznünk. Lefutásáról csak annyit érdemes feltételezni,
 			hogy az előtt fut le, hogy az objektum által lefoglalt terület
 			újrahasznosításra kerülne. Fontos, hogy a destruktor
-			<filename>protected, void</filename> és paraméter nélküli legyen.
-		</para>
-		<para>
+            <filename>protected, void</filename> és paraméter nélküli legyen.
+        </para>
+        <para>
 			Lássuk a példákat.
-		</para>
-		<programlisting language="java">
-			<![CDATA[
+        </para>
+        <programlisting language="java">
+            <![CDATA[
 public class Hallgato {
 	String nev;
 	String neptun_kod;
@@ -255,30 +272,30 @@ public class Hallgato {
 	}
 }
 			]]>
-		</programlisting>
-		<para>
+        </programlisting>
+        <para>
 			Tegyük fel, hogy a Hallgato osztályt szeretnénk továbbfejleszteni,
 			azonban olyan munkahelyen dolgozunk, ahol nincs hozzáférésünk,
 			autoritásunk, hogy ezt megtegyük. Egy dolog amit tehetünk, hogy
 			kiterjesztjük az osztályt, új mezőket és metódusokat helyezünk el
 			benne. Ilyenkor öröklődés megy végbe.
-		</para>
-		<para>
+        </para>
+        <para>
 			Az öröklődés lényege, hogy az új osztály "megörökli" az ős osztály
 			tulajdonságait, mezőit, metódusait. Lássunk erre is egy példát.
-		</para>
-		<para>
-			<emphasis role="strong">5. fejezet -- Kivételkezelés</emphasis>
-		</para>
-	</section>
-	<section>
-		<title>Python</title>
-		<para>
+        </para>
+        <para>
+            <emphasis role="strong">5. fejezet -- Kivételkezelés</emphasis>
+        </para>
+    </section>
+    <section>
+        <title>Python</title>
+        <para>
             A Pythont 1990-ben alkotta meg Guido von Rossum. A könyv írásának
             idejében még csak prototipizálásra használták, viszont manapság
             már sokkal szélesebb körökben elterjedt a nyelv, nem is csoda,
             hiszen nagyon könnyen elsajátítható nyelvről van szó.
-		</para>
+        </para>
         <para>
             Fontos különbség még a C++-hoz és Javához képest, hogy a Pythonban
             a kódcsoportosítás alapját az indent adja, tehát nagyon fontos,
@@ -315,7 +332,7 @@ public class Hallgato {
         <para>
             A nyelv számos funkciója példákon keresztül:
         </para>
-	</section>   
-        
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+    </section>
+
+
 </chapter>     

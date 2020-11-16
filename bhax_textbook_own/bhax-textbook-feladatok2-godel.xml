@@ -1,0 +1,235 @@
+<chapter xmlns="http://docbook.org/ns/docbook"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:xi="http://www.w3.org/2001/XInclude" version="5.0" xml:lang="hu">
+    <info>
+        <title>Hello, Gödel!</title>
+    </info>
+    <section>
+        <title>Gengszterek</title>
+        <para>
+            Gengszterek rendezése lambdával a Robotautó Világbajnokságban
+        </para>
+        <para>
+            A robocar-emulator projekt leírásából idézve:
+        </para>
+        <para>
+            <quote>
+                Robocar World Championship (OOCWC) is intended to offer a common
+                research platform for developing urban traffic control
+                algorithms and for investigating the relationship between smart
+                cities and robot cars with particular attention to spread of
+                robot cars of the near future.
+            </quote>
+        </para>
+        <para>
+            Ha általánosan kellene megfogalmazzam, azt mondanám, hogy bárhol,
+            ahol függvénymutatót használunk, használhatunk lambda kifejezéseket.
+            Tehát akkor használunk lambda kifejezéseket, ahol másképpen
+            függvénymutatókat használnánk.
+        </para>
+        <para>
+            Például az <function>std::sort</function> STL függvény deklarációja
+            a következőképpen néz ki:
+        </para>
+        <programlisting language="c++">
+            <![CDATA[void sort()
+template <class RandomAccessIterator>
+    void sort (RandomAccessIterator first, RandomAccessIterator last);
+template <class RandomAccessIterator, class Compare>
+    void sort (RandomAccessIterator first, RandomAccessIterator last, Compare comp);]]>
+        </programlisting>
+        <para>
+            Ebből látjuk, hogy a függvényt kétféleképpen hívhatjuk: megadunk
+            neki két iterátort, vagy megadunk két iterátort és egy függvényt,
+            ami megfelel a <function>Compare</function> követelményeknek
+            (röviden annyi, hogy bool típusú, két paramétere van, melyeket nem
+            módosít).
+        </para>
+        <para>
+            Ezután lássuk az éles példát: a következő kódcsipet a Robotautó
+            Világbajnokság projektből származik:
+        </para>
+        <programlisting language="c++">
+            <![CDATA[std::vector<Gangster> gangsters;
+std::sort ( gangsters.begin(), gangsters.end(), [this, cop] ( Gangster x, Gangster y )
+{
+    return dst ( cop, x.to ) < dst ( cop, y.to );
+} );]]>
+        </programlisting>
+        <para>
+            Azt látjuk, hogy egy Gangster objektumokból álló vektort rendezünk.
+            Ekkor megtehetnénk azt, hogy az osztályban felüldefináljuk az <code language="c++"><![CDATA[operator<]]></code> operátort, vagy
+            csinálhatjuk így is, lambda kifejezéssel. Itt a rendezés alapját a
+            <varname>cop</varname>-tól, azaz a rendőrtől mért távolság adja,
+            azaz azok az elemek kerülnek a vektor elejére, amelyek a rendőrhöz a
+            legközelebb vannak.
+        </para>
+    </section>
+    <section>
+        <title>C++11 Custom Allocator</title>
+        <para>
+            https://prezi.com/jvvbytkwgsxj/high-level-programming-languages-2-c11-allocators/
+            a CustomAlloc-os példa, lásd C forrást az UDPROG repóban!
+        </para>
+        <para>
+            C++-ban az allokátorok szerepe, mint ahogyan a nevük is mutatja,
+            hogy memóriát allokáljanak az adatszerkezeteink számára. Ugyan az
+            alapértelmezett allokátor a
+            <code language="c++"><![CDATA[std::allocator<T> ]]></code>,
+            megtehetjük, hogy sajátot írjunk, például egy vektorban tárolt
+            értékek tárolására, hiszen a
+            <code language="c++"><![CDATA[<vector>]]></code>
+            header valami hasonlót tartalmaz:
+        </para>
+        <programlisting language="C++">
+            <![CDATA[template<
+    class T,
+    class Allocator = std::allocator<T>
+> class vector;]]>
+        </programlisting>
+        <para>
+            Látható, hogy az Allocatornak van alapértelmezett értéke, de ezt
+            felülírhatjuk.
+        </para>
+        <para>
+            Az allokátorok mögötti ötlet véleményem szerint a KISS alapelvein
+            nyugszik. A cél, hogy egy osztály minél kevesebb dologért feleljen.
+            A memóriafoglalás mindig veszélyes vizeken nyugszik, jobb ha ezt egy
+            külön részre bontjuk.
+        </para>
+        <para>
+            Ennyi bevezető után már lássunk egy saját allokátort, majd nézzük
+            meg, hogy hogyan, s miért használunk ilyet.
+        </para>
+        <programlisting language="c++">
+            <textobject>
+                <textdata fileref="./Godel/CustomAlloc.cpp" />
+            </textobject>
+        </programlisting>
+        <para>
+            A <classname>CustomAlloc</classname> osztály végzi az allokáló
+            munkát, valamint végez némi követést. Minden alkalommal, mikor
+            foglalunk, láthatjuk a sztender kimeneten is.
+        </para>
+        <para>
+            A kódot nem olyan nehéz megemészteni, amit nem érthetünk benne, az
+            például a
+            <function>
+                <![CDATA[ abi::__cxa_demangle(typeid(T).name(), 0, 0, &s); ]]>
+            </function>
+            kifejezés.
+        </para>
+        <para>
+            Ez a demangle függvény azt tudja, hogy egy megcsonkított azonosítót
+            megpróbál kibogozni és megmondani az eredeti formáját. Fontos, hogy
+            mivel ez a függvény egy char pointert ad vissza, a neki foglalt
+            memóriát kézileg kell felszabadítani a <code language="c++">free()</code> használatával.
+        </para>
+        <programlisting language="c++">https://www.facebook.com/groups/udprog/permalink/1231713563683197/
+            <![CDATA[struct CustomAllocInt {
+using size_type = size_t;
+using value_type = int;
+using const_pointer = const int*;
+using reference = int&;...]]>
+        </programlisting>
+        <programlisting language="c++">
+            <![CDATA[struct CustomAllocChar {
+using size_type = size_t;
+using value_type = char;
+using const_pointer = const char*;
+using reference = char&;...]]>
+        </programlisting>
+        <para>
+            A cél az, hogy generalizáljuk a kódot,
+            és ezáltal minél kevesebbet kelljen írni. Ha nem használnánk ezt a
+            templatet, akkor meg kéne írjuk ezt az allokátort a létező összes
+            típusra.
+        </para>
+        <para>
+            A program kimenete a következőképp néz ki:
+        </para>
+        <screen><![CDATA[$ g++ --std=c++17 CustomAlloc.cpp && ./a.out
+Allocating 1 object(s) of 4 bytes. i=int
+Allocating 1 object(s) of 8 bytes. l=long
+Allocating 1 object(s) of 32 bytes. NSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE=std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >
+]]>
+        </screen>
+        <para>
+            Láthatjuk, hogy hány bájt megy el a foglalásokra, illetve hogy
+            milyen típusból foglalunk. A string foglalásánál megjelenő típusnév
+            rövidítés és típusnév bonyolultságát az magyarázza, hogy a
+            <type>std::string</type> egy wrapper osztály, amely eldönti, hogy a
+            motorháztető alatt milyen konkrét típussal dolgozzon.
+        </para>
+    </section>
+    <section>
+        <title>STL map érték szerinti rendezése</title>
+        <para>
+            Például:
+            <link xlink:href="https://github.com/nbatfai/future/blob/master/cs/F9F2/fenykard.cpp#L180">
+                https://github.com/nbatfai/future/blob/master/cs/F9F2/fenykard.cpp#L180
+            </link>
+        </para>
+        <para>
+            Ebben a példában megismerjük a C++ STL map adatszerkezetét. Ez az
+            adatszerkezet úgynevezett párok tárolására képes, általában a párok
+            első elemét hívjuk kulcsnak, a másodikat pedig értéknek. Új értékeket
+            az <code>insert()</code> metódus meghívásával lehet
+            hozzáadni, mely paramétereként elfogad egy <code>std::pair</code>
+            típusú objektumot.
+        </para>
+        <para>
+            Úgy, ahogyan a vektoroknál, a map-eknél is léteznek iterátorok,
+            melyek megkönnyítik a bejárásukat.
+        </para>
+        <programlisting language="c++">
+            <textobject>
+                <textdata fileref="./Godel/maps.cpp" />
+            </textobject>
+        </programlisting>
+        <para>
+            A program kimenete a következő:
+        </para>
+        <screen>
+            <![CDATA[$ g++ maps.cc  && ./a.out
+1       10
+2       20
+3       30
+4       40
+5       50]]>
+        </screen>
+        <para>
+            A feladat az, hogy egy ilyen táblát érték szerint rendezzünk,
+            viszont ehhez előbb cseréljük fel az elemeket, hogy lássuk, hogy mi
+            történik. Mivel semmi nem tiltja, hogy STL függvényeket használjak,
+            ezért én a <function>std::sort</function> függvényt hívnám
+            segítségül:
+        </para>
+        <programlisting language="c++">
+            <textobject>
+                <textdata fileref="./Godel/sorted.cpp" />
+            </textobject>
+        </programlisting>
+        <screen><![CDATA[$ g++ --std=c++17 sorted.cc  && ./a.out
+Map before sorting:
+1       50
+2       10
+3       20
+4       40
+5       30
+Map after sorting:
+2       10
+3       20
+5       30
+4       40
+1       50]]>
+        </screen>
+        <para>
+            A megoldásom lényege, hogy mivel a std::sort STL függvény nem
+            működik map-ekre, viszont vektorokra igen, csinálok egy párokból
+            álló vektort, majd erre hívom meg a szóban forgó függvényt, melynek
+            a harmadik paramétere elfogad egy függvényt, amely az
+            összehasonlítást végzi.
+        </para>
+    </section>
+</chapter>

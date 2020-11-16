@@ -1,0 +1,197 @@
+
+<chapter xmlns="http://docbook.org/ns/docbook"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        xmlns:xi="http://www.w3.org/2001/XInclude" version="5.0" xml:lang="hu">
+        <info>
+            <title>Helló, Calvin!</title>
+            <keywordset>
+                <keyword/>
+            </keywordset>
+        </info>
+        <section>
+            <title>MNIST</title>
+            <para>
+            Az MNIST egy keras dataset, melynek felhasználásával betaníthatunk egy neurális hálót. A háló arra lesz képes, hogy többnyire
+            kézzel írt számokat felismerjen. A programunk a következőképpen működik:
+            </para>
+                <programlisting language ="python">
+                    <![CDATA[ 
+    input_image = np.array(Image.open(sys.argv[1]).convert('L').resize((28, 28), 0)).reshape(1, 28, 28, 1)
+
+    (x_train, y_train), (x_test, y_test) = tf.keras.datasets.mnist.load_data()
+
+    x_train = x_train.reshape(x_train.shape[0], 28, 28, 1)
+    x_test = x_test.reshape(x_test.shape[0], 28, 28, 1)
+    x_train = x_train.astype('float32')
+    x_test = x_test.astype('float32')
+    x_train /= 255
+    x_test /= 255
+                ]]>
+                </programlisting>
+                <para>
+                Itt beolvasunk egy képet az argv[1]-ben bekért  elérési útvonalról, aztán átméretezzük, 28x28-as méretűre.
+                Betöltjük az (x_train,y_train) és az (x_test,y_test) tömbök tuplejébe.
+                A tömböket reshapeljük 28x28-asra. Következő lépésként az x_train,y_train-t 
+                elosztjuk 255-tel, így a színtelenítjük a beolvasott képet.
+                </para>
+                <programlisting language="python">
+                <![CDATA[
+    model = Sequential()
+    model.add(Conv2D(28, kernel_size=(3,3), input_shape=(28, 28, 1)))
+    model.add(MaxPooling2D(pool_size=(2, 2)))
+    model.add(Flatten())
+    model.add(Dense(128, activation=tf.nn.relu)) model.add(Dropout(0.2))
+    model.add(Dense(10,activation=tf.nn.softmax))
+                ]]>
+                </programlisting>
+                <para>
+                Itt egy szekvenciális modellt inicializálunk, mely 5 rétegből áll. Rétegek típusai:
+                Conv2D,MaxPooling2D,Flatten,Dense x2.
+                </para>
+                <programlisting>
+                <![CDATA[
+    model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
+    model.fit(x=x_train,y=y_train, epochs=10, callbacks=[tensorboard_callback])
+    model.evaluate(x_test, y_test)
+    pred = model.predict(input_image)
+    print (pred)
+    print("The number is = ", pred.argmax())
+                ]]>
+                </programlisting>
+                <para>
+                    Fordítjuk a modellt, mérési egység a pontosság lesz, majd fitteljük, kiértékeljük és 
+                    a bekért képünkre egy predikciót készítünk.
+                </para>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="./Calvin/mnist/eight.jpg" width="100%" />
+                    </imageobject>
+                </mediaobject>
+
+                <para>
+                    Ez lesz a beolvasott képünk.
+                </para>
+
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="./Calvin/mnist/result.png" width="100%" />
+                    </imageobject>
+                </mediaobject>
+                <para>
+                    Ez pedig az eredményünk.(csak 2 epochon mentünk keresztül, hisz a 2. után már 97% potnosságot kaptunk).
+                </para>
+        </section>
+        <section>
+            <title>CIFAR-10</title>
+            <para>
+                A CIFAR-10 egy dataset ami 60000 32x32-es színes képet tartalmaz. 10 osztályt különböztetünk meg : 
+            </para>
+            <itemizedlist>
+                <listitem>
+                    <para>airplane</para>
+                </listitem>
+                <listitem>
+                    <para>automobile</para>
+                </listitem>
+                <listitem>
+                    <para>bird</para>
+
+                </listitem>
+                <listitem>
+                    <para>
+                        cat
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        deer
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        dog
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        horse
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        frog
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        ship
+                    </para>
+                </listitem>
+                <listitem>
+                    <para>
+                        truck
+                    </para>
+                </listitem>
+            </itemizedlist>
+
+            <para>
+                Ezt a datasettet fogjuk felhasználni hogy betanítsuk a neurális hálónkat.
+                A neurális háló hasonló az MNISTéhez, a különbség az, hogy a Conv2D rétegből 3at, relu aktivációs fügvénnyel
+                teszünk bele, valamint a MaxPooling2D-ból kettő lesz.
+            </para>
+            <para>
+                Ezt a képet szeretnénk azonosítani :
+            </para>
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="./Calvin/cifar10/plane.png" width="100%" />
+                </imageobject>
+            </mediaobject>
+            <para>
+            A forráskód :
+            </para>
+            <programlisting language="python">
+                <![CDATA[
+import tensorflow as tf
+from tensorflow.keras import datasets, layers, models
+
+import matplotlib.pyplot as plt
+import numpy as np
+import sys
+from PIL import Image
+
+input_image = np.array(Image.open(sys.argv[1]).getdata().resize((32, 32), 0))
+print (input_image.shape)
+
+(train_images, train_labels), (test_images, test_labels) = datasets.cifar10.load_data()
+train_images, test_images = train_images / 255.0, test_images / 255.0
+
+class_names = ['airplane', 'automobile', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck']
+
+model = models.Sequential()
+model.add(layers.Conv2D(32, (3, 3), activation='relu', input_shape=(32, 32, 3)))
+model.add(layers.MaxPooling2D((2, 2)))
+model.add(layers.Conv2D(64, (3, 3), activation='relu'))
+model.add(layers.MaxPooling2D((2, 2)))
+model.add(layers.Conv2D(64, (3, 3), activation='relu'))
+model.add(layers.Flatten())
+model.add(layers.Dense(64, activation='relu'))
+model.add(layers.Dense(10))
+model.summary()
+model.compile(optimizer='adam', loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True), metrics=['accuracy'])
+
+history = model.fit(train_images, train_labels, epochs=10, validation_data=(test_images, test_labels))
+
+test_loss, test_acc = model.evaluate(test_images,  test_labels, verbose=2)
+
+print(test_acc)
+
+pred = model.predict(input_image.reshape((1, 32, 32, 3)))
+
+print (pred)
+
+print(class_names[pred.argmax()])
+                ]]>
+            </programlisting>
+        </section>
+</chapter>     

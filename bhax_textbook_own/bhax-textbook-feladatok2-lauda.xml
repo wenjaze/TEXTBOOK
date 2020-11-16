@@ -1,0 +1,61 @@
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude" version="5.0" xml:lang="hu">
+    <info>
+        <title>Helló, Lauda!</title>
+        <keywordset>
+            <keyword/>
+        </keywordset>
+    </info>
+
+    <section>
+        <title>PORT scan</title>
+        <para>Ez a fejezet a kivételkezelésről szól, ezáltal a port scan feladatunk is egy
+            kivételkezelésre fog épülni.</para>
+        <para>A programunk, ugy mukodik, hogy végigmegy a portokon 0-1024-ig, majd egy java socket megpróbál minden lefutásnál az adott számú portra csatlakozni.</para>
+        <para>Itt jön be a try-catch pár (ez a fejezet témája), ami sikertelen csatlakozásnál kiírja az adott portszámot
+            , valamint azt, hogy nem csatlakozik rá, sikeresnél pedig azt, hogy csatlakozik rá.</para>
+        <programlisting language="java">
+        <![CDATA[
+            public class KapuSzkenner {
+    
+                public static void main(String[] args) {
+                    
+                    for(int i=0; i<1024; ++i)
+                        
+                        try {
+                            
+                            java.net.Socket socket = new java.net.Socket(args[0], i);
+                            
+                            System.out.println(i + " figyeli");
+                            
+                            socket.close();
+                            
+                        } catch (Exception e) {
+                            
+                            System.out.println(i + " nem figyeli");
+                            
+                        }
+                }
+                
+            }
+        ]]>
+        </programlisting> 
+
+        <para>
+            Példa kimenet alább látható (0-65535):
+        </para>
+        <screen>
+            <![CDATA[
+$ java PortScan unideb.hu | grep -v nem
+22 figyeli
+25 figyeli
+80 figyeli
+111 figyeli
+113 figyeli
+443 figyeli
+2017 figyeli
+5666 figyeli
+]]>
+        </screen>
+    </section>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+</chapter>    
