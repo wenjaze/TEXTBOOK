@@ -57,5 +57,58 @@ $ java PortScan unideb.hu | grep -v nem
 ]]>
         </screen>
     </section>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+
+    <section>
+        <title>Android Játék</title>
+        <para>
+            Írjunk egy egyszerű Androidos "játékot"! Építkezzünk például a 2.
+            hét "Helló, Android!" feladatára!
+        </para>
+        <para>
+            Ebben a feladatban végre hasznomra válnak az önfejlesztés gyanánt készített játékok.
+            Ehez a feladathoz, egy multiplayer fps játékot fogok felhasználni.A Unity előnye, hogy ha előre
+            gondolkoztunk és az irányítást nem a billentyűgombokhoz rendeljük, hanem az X,Y tengelyen
+            való mozgáshoz, akkor bármikor androidos játékot készíthetünk egy pc-s játékból. A játékhoz felhasználtam egy 
+            Unityhez készített multiplayer csomagot, ami teljesen ingyenes. Foglalkoztam a projektben UI/UX Designal,
+            3D modellezés/skinning/animació/textúrázással tartalmazott továbbá rengeteg multiplayer logika programozást, 
+            játékmechanika, játékdesign kialakítását.
+        </para>
+        <para>
+            A játék egy Quake/CS:GO ötvözetnek mondható, a jelentős különbség az, hogy low-poly modelleket készítettem, amivel
+            ugye gyorsabb a játék, mivel itt nem a grafika hanem a mechanika a lényeg.
+        </para>
+        <figure>
+            <title>
+                Menü (Először valakinek szobát kell csinálnia)
+            </title>
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="./Lauda/menu.png" width="80%" />
+                </imageobject>
+            </mediaobject>
+        </figure>
+        <figure>
+            <title>
+                Ingame screenshot
+            </title>
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="./Lauda/game1.png" width="80%" />
+                </imageobject>
+            </mediaobject>
+        </figure>
+        <figure>
+            <title>
+                Recoil
+            </title>
+            <mediaobject>
+                <imageobject>
+                    <imagedata fileref="./Lauda/game2.png" width="80%" />
+                </imageobject>
+            </mediaobject>
+        <para>
+            A projektben minden saját készítésű, a multiplayer scripteket kivéve.
+        </para>
+        </figure>
+    </section>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
 </chapter>    
