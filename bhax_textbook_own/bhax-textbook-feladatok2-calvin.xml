@@ -194,4 +194,47 @@ print(class_names[pred.argmax()])
                 ]]>
             </programlisting>
         </section>
+        <section>
+            <title>Android Tensorflow Példa</title>
+            <para>
+                A Tensorflow, mint mindig, itt is elég noob friendly, ebben a példában is egy remek lehetőséget nyújt
+                azok az emberek számára, akik teljesen kezdők mind az android mint a TF világában. Jelen esetben a tensorflow
+                egy kész példát ad nekünk. Ezen a linken érhető el az alap projekt README-je: https://github.com/tensorflow/examples/blob/master/lite/examples/object_detection/android/README.md .
+                Az Android Studio telepítése, majd egy gradle sync után egyből buildeljük, futtatjuk és egyből ez fogad bennünket.
+                Az appban felhasznált object detection model itt találtahó, ha valaki fel akarná használni egy hasonló projekthez : storage.googleapis.com/download.tensorflow.org/models/tflite/coco_ssd_mobilenet_v1_1.0_quant_2018_06_29.zip
+            </para>
+            <figure>
+                <title>Object Detection on Android.</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="./Calvin/tf_android/tf_android.png" width="100%" />
+                    </imageobject>
+                </mediaobject>
+            </figure>
+            <figure>
+                <title>Object Detection details.</title>
+                <mediaobject>
+                    <imageobject>
+                        <imagedata fileref="./Calvin/tf_android/tf_android2.png" width="100%" />
+                    </imageobject>
+                </mediaobject>
+            </figure>
+            <para>
+                Ugye itt a részletes adatoknál láthatunk több dolgot, pl:
+            </para>
+            <itemizedlist>
+                <listitem>
+                    <para>Melyik objektum, hány % eséllyel</para>
+                </listitem>
+                <listitem>
+                    <para>Mekkora az objektum mérete a képen (px)</para>
+                </listitem>
+                <listitem>
+                    <para>Milyen eszközzel futtatjuk (CPU)</para>
+                </listitem>
+                <listitem>
+                    <para>Esetleges alternatívák az objektumra (window shade 15%)</para>
+                </listitem>
+            </itemizedlist>
+        </section>
 </chapter>     

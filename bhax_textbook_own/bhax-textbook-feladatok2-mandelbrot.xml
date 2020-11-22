@@ -26,6 +26,10 @@
             <filename>#</filename> azonosítja.
         </para>
         <para>
+            Láthatjuk továbbá az egyes osztályváltozók típusait (ami lehet akár egy másik osztály is). Az is fel van tüntetve rajta,
+            hogy melyik függvényünk lesz a konstruktor, destruktor stb..
+        </para>
+        <para>
             Az első védési programhoz, az <filename>LZWBinFá</filename>hoz
             tartozó osztálydigram itt látható.
         </para>
@@ -47,11 +51,9 @@
         </para>
         <para>
             Az esettanulmány az UML tervezés előnyeit próbálja megmutatni.  A
-            történet, hogy van egy cég, aki számítógépeket és alkatrészeket
-            árul, és az ő számukra kell egy alkalmazást készíteni, ami
-            nyilvántartja az alkatrészeket és a konfigurációkat.  Továbbá cél
-            az is, hogy a jövőben minél egyszerűbben kiegészíthető koncepciót
-            alkossunk.
+            történet, hogy van egy vállalat, aki számítógépeket és azok alkatrészeit árulja. Nekik kell egy alkalmazást létrehozni, ami
+            nyilvántartja az alkatrészeket és a fontosabb információkat.  Cél valamint az is, hogy az elkészített programunk skálázható és
+            adaptálható legyen.
         </para>
         <para>
             A megoldást esetünkben egy C++ könyvtár (library) segítségével
@@ -131,5 +133,10 @@
                 </para>
             </listitem>
         </itemizedlist>
+        <para>
+            Ezen eszköz segítségével, bármilyen folyamatot tudunk vizualizálni, valamint kapunk egy képet
+            a folyamatról, mely automatizálására programot akarunk írni. Hasznos lehet, ha komplex feladatok automatizálásáról
+            beszélünk, vagy ha szimplán valamilyen más iparági folyamatot kell megértenünk.
+        </para>
     </section>
 </chapter>

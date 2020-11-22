@@ -106,6 +106,7 @@ $ java PortScan unideb.hu | grep -v nem
                     <imagedata fileref="./Lauda/game2.png" width="80%" />
                 </imageobject>
             </mediaobject>
+            
         <para>
             A projektben minden saját készítésű, a multiplayer scripteket kivéve.
         </para>
